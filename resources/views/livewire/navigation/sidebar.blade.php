@@ -13,7 +13,7 @@
     <!--navigation-->
     <ul class="metismenu" id="menu">
         <li>
-            <a href="{{ route('dashboard') }}" wire:navigate>
+            <a href="{{ route('dashboard') }}">
                 <div class="parent-icon"><i class='bx bx-home-alt'></i>
                 </div>
                 <div class="menu-title">Dashboard</div>
@@ -23,12 +23,26 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="{{ route('dashboard') }}">
+                <div class="parent-icon"><i class='bx bx-home-alt'></i>
+                </div>
+                <div class="menu-title">JOBS</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('applicants') }}"><i class='bx bx-radio-circle'></i>Applicant List</a>
+                </li>
+                <li> <a href="{{ route('jobslist') }}"><i class='bx bx-radio-circle'></i>Vacancy Available</a>
+                </li>
+            </ul>
+        </li>
         <li> 
-            <a href="{{ route('users') }}" wire:navigate >
+            <a href="{{ route('users') }}"  >
                 <div class="parent-icon"><i class="bx bx-user-circle"></i>
                 </div>
                 <div class="menu-title">Users</div>
             </a>
+        </li>
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-cog fs-5"></i>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Jobapplications extends Model
 {
@@ -25,4 +26,10 @@ class Jobapplications extends Model
         'collageCert',
         'applicationLetter'
     ];
+
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->dob)->age;
+    }
+
 }

@@ -17,7 +17,6 @@
                         @php
                             $number = 1;
                         @endphp
-                        {{ dd($regions) }}
                         @foreach ($regions as $region)
                             <tr>
                                 <td>{{ $number++ }}</td>

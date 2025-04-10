@@ -1,22 +1,31 @@
 <?php
 
+use App\Http\Controllers\TemplateController;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Jobs;
 use App\Livewire\Admin\Location;
 use App\Livewire\Admin\Users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+    Route::get('/', [TemplateController::class, 'contact'])->name('contact');
+    Route::get('/applynow', [TemplateController::class, 'contact'])->name('contact');
+    Route::get('/team', [TemplateController::class, 'team']);
+    Route::get('/about', [TemplateController::class, 'about']);
+    Route::get('/events', [TemplateController::class, 'events']);
+    Route::post('/applicationform', [TemplateController::class, 'applicationform'])->name('applicationform');
 
-// Route::view('dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 
 // Dashboard routes
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/', Dashboard::class)->name('dashboard');
+    Route::get('dashboard', Dashboard::class)->name('dashboard');
+    Route::get('jobslist', Jobs::class)->name('jobslist');
+    Route::get('applicants', Jobs::class)->name('applicants');
     Route::get('location', Location::class)->name('location');
 
     Route::get('users', Users::class)->name('users');
+    
     Route::get('logout', Dashboard::class)->name('logout');
     Route::post('/logout', function (Request $request) {
         Auth::logout(); // Logout user
