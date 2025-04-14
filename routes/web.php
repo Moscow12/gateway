@@ -4,6 +4,7 @@ use App\Http\Controllers\TemplateController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Jobs;
 use App\Livewire\Admin\Location;
+use App\Livewire\Admin\Userprofile;
 use App\Livewire\Admin\Users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('location', Location::class)->name('location');
 
     Route::get('users', Users::class)->name('users');
+    Route::get('userprofile', Userprofile::class)->name('userprofile');
     
     Route::get('logout', Dashboard::class)->name('logout');
     Route::post('/logout', function (Request $request) {

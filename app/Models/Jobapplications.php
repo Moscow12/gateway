@@ -16,6 +16,7 @@ class Jobapplications extends Model
         'Nida', 
         'dob', 
         'Location',
+        'status',
         'fourFourCert', 
         'internshipCert', 
         'birthCert',

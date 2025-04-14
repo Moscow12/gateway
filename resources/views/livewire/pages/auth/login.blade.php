@@ -44,8 +44,8 @@ new #[Layout('components.layouts.guest')] class extends Component
                     <div class="card rounded-0 m-3 shadow-none bg-transparent mb-0">
                         <div class="card-body p-sm-5">
                             <div class="">
-                                <div class="mb-3 text-center">
-                                    <img src="admin/images/logo-icon.png" width="60" alt="">
+                                <div class="mb-3 center" style="padding-left: 117px;">
+                                    <img src="admin/images/logo.jpg" width="80" alt="">
                                 </div>
                                 <div class="text-center mb-4">
                                     <h5 class="">HR PORTAL (HRP~STJH)</h5>

@@ -52,23 +52,23 @@
             <ul>
                 <li> <a href="{{ route('location') }}" wire:navigate><i class='bx bx-radio-circle'></i>Location</a>
                 </li>
-                <li> <a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>Product
+                <li> <a href="#l"><i class='bx bx-radio-circle'></i>Product
                         Details</a>
                 </li>
-                <li> <a href="ecommerce-add-new-products.html"><i class='bx bx-radio-circle'></i>Add New
+                <li> <a href="#"><i class='bx bx-radio-circle'></i>Add New
                         Products</a>
                 </li>
-                <li> <a href="ecommerce-orders.html"><i class='bx bx-radio-circle'></i>Orders</a>
+                <li> <a href="#"><i class='bx bx-radio-circle'></i>Orders</a>
                 </li>
-                <li><a class="has-arrow" href="javascript:;"><i class='bx bx-radio-circle'></i>Cover</a>
+                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Cover</a>
                     <ul>
-                        <li><a href="auth-cover-signin.html" target="_blank"><i
+                        <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Sign In</a></li>
-                        <li><a href="auth-cover-signup.html" target="_blank"><i
+                        <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Sign Up</a></li>
-                        <li><a href="auth-cover-forgot-password.html" target="_blank"><i
+                        <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Forgot Password</a></li>
-                        <li><a href="auth-cover-reset-password.html" target="_blank"><i
+                        <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Reset Password</a></li>
                     </ul>
                 </li>
