@@ -1,11 +1,7 @@
 <?php
 
 use App\Http\Controllers\TemplateController;
-use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\Jobs;
-use App\Livewire\Admin\Location;
-use App\Livewire\Admin\Userprofile;
-use App\Livewire\Admin\Users;
+use App\Livewire\Admin\{Addusers, Dashboard, Jobs, Location, Userprofile, Users};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,9 +20,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('jobslist', Jobs::class)->name('jobslist');
     Route::get('applicants', Jobs::class)->name('applicants');
     Route::get('location', Location::class)->name('location');
-
+    Route::get('addusers', Addusers::class)->name('addusers');
     Route::get('users', Users::class)->name('users');
     Route::get('userprofile', Userprofile::class)->name('userprofile');
+
+    Route::view('admin/userlists', 'admin.userlists')->name('userlists');
     
     Route::get('logout', Dashboard::class)->name('logout');
     Route::post('/logout', function (Request $request) {
