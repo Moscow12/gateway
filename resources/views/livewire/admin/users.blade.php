@@ -5,18 +5,17 @@
                 <div class="position-relative">
                     <input type="text" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
                 </div>
-                <div class="ms-auto"><a href="javascript:;" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add New Order</a></div>
+                <div class="ms-auto"><a href="{{ route('addusers') }}" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add Users</a></div>
             </div>
             <div class="table-responsive">
                 <table class="table mb-0">
                     <thead class="table-light">
                         <tr>
                             <th>Order#</th>
-                            <th>Company Name</th>
-                            <th>Status</th>
-                            <th>Total</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <th>Date</th>
-                            <th>View Details</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -33,17 +32,14 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ $User->name }}</td>
-                            <td>
-                                <div class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i class='bx bxs-circle align-middle me-1'></i>Partially shipped</div>
-                            </td>
+                            <td>{{ $User->name }}</td>                          
                             <td>{{ $User->email }}</td>
+                            <td>{{ $User->phone }}</td>
                             <td>{{ $User->created_at }}</td>
-                            <td><button type="button" class="btn btn-primary btn-sm radius-30 px-4">View Details</button></td>
                             <td>
                                 <div class="d-flex order-actions">
-                                    <a href="javascript:;" class=""><i class='bx bxs-edit'></i></a>
-                                    <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'></i></a>
+                                    <a href="#" class=""><i class='bx bxs-edit'></i></a>
+                                    <a href="#" class="ms-3"><i class='bx bxs-trash'></i></a>
                                 </div>
                             </td>
                         </tr>

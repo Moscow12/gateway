@@ -17,15 +17,11 @@
                 <div class="parent-icon"><i class='bx bx-home-alt'></i>
                 </div>
                 <div class="menu-title">Dashboard</div>
-            </a>
-            <ul>
-                <li> <a href="index.html"><i class='bx bx-radio-circle'></i>Default</a>
-                </li>
-            </ul>
+            </a>           
         </li>
         <li>
-            <a href="{{ route('dashboard') }}">
-                <div class="parent-icon"><i class='bx bx-home-alt'></i>
+            <a href="{{ route('applicants') }}">
+                <div class="parent-icon"><i class='bx bx-analyse'></i>
                 </div>
                 <div class="menu-title">JOBS</div>
             </a>
@@ -50,15 +46,13 @@
                 <div class="menu-title">Settings</div>
             </a>
             <ul>
-                <li> <a href="{{ route('location') }}" wire:navigate><i class='bx bx-radio-circle'></i>Location</a>
+                <li> <a href="{{ route('location') }}" wire:navigate><i class='bx bx-radio-circle'></i>Address</a>
                 </li>
-                <li> <a href="#l"><i class='bx bx-radio-circle'></i>Product
-                        Details</a>
+                <li> <a href="#l"><i class='bx bx-radio-circle'></i>Website Settings</a>
                 </li>
-                <li> <a href="#"><i class='bx bx-radio-circle'></i>Add New
-                        Products</a>
+                <li> <a href="#"><i class='bx bx-radio-circle'></i>Vacancy Registry</a>
                 </li>
-                <li> <a href="#"><i class='bx bx-radio-circle'></i>Orders</a>
+                <li> <a href="#"><i class='bx bx-radio-circle'></i>Updates</a>
                 </li>
                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Cover</a>
                     <ul>
