@@ -49,7 +49,25 @@
                                     <input type="password" class="form-control" id="password" name="password" wire:model="password_confirmation"  placeholder="Choose Password">
                                         @error('password') <span style="color:red;">{{ $message }}</span> @enderror
                                 </div>
-                            </div>                          
+                            </div>     
+                            <div class="p-4">
+                            <input type="file" wire:model="photos" multiple accept="image/*" class="mb-2">
+
+                            @error('photos.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+                            @if ($photos)
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    @foreach ($photos as $photo)
+                                        <div>
+                                            <img src="{{ $photo->temporaryUrl() }}" class="w-full h-auto border rounded">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            
+                        </div>
+                     
                             <div class="row">
                                 <label class="col-sm-3 col-form-label"></label>
                                 <div class="col-sm-9">

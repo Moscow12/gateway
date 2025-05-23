@@ -15,6 +15,7 @@
                             <th>User Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Photo</th>
                             <th>Date</th>
                             <th>Actions</th>
                         </tr>
@@ -35,6 +36,19 @@
                             <td>{{ $User->name }}</td>                          
                             <td>{{ $User->email }}</td>
                             <td>{{ $User->phone }}</td>
+                            <td>
+                                @if ($User->photos && is_array($User->photos))
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        @foreach ($User->photos as $photo)
+                                            <div>
+                                                <img src="{{ asset('storage/' . $photo) }}" alt="User Photo" class="w-full h-auto rounded border">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p>No photos available.</p>
+                                @endif
+                            </td>
                             <td>{{ $User->created_at }}</td>
                             <td>
                                 <div class="d-flex order-actions">
