@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('meter_number');
             $table->date('dateconnected');
             $table->text('address');
-            $table->interger('Region_ID')->foreign('Region_ID')->references('id')->on('regions');
-            $table->interger('District_ID')->foreign('District_ID')->references('id')->on('districts');
-            $table->interger('ward_id')->foreign('ward_id')->references('id')->on('wards');
+            $table->integer('Region_ID')->foreign('Region_ID')->references('id')->on('regions');
+            $table->integer('District_ID')->foreign('District_ID')->references('id')->on('districts');
+            $table->integer('ward_id')->foreign('ward_id')->references('id')->on('wards');
             $table->string('street');
             $table->string('emegence_contacts');
             $table->string('longitudinal');

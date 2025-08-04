@@ -1,14 +1,16 @@
 <?php
 
 use App\Http\Controllers\TemplateController;
-use App\Livewire\Admin\{Addusers, Dashboard, Jobs, Location, Userprofile, Users};
+use App\Livewire\Admin\{Addusers, Client, Dashboard, Jobs, Location, Smscategory, Userprofile, Users};
+use App\Livewire\Admin\Website\Addteam;
+use App\Livewire\Admin\Website\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
     Route::get('/', [TemplateController::class, 'contact'])->name('contact');
     Route::get('/applynow', [TemplateController::class, 'contact'])->name('contact');
-    Route::get('/team', [TemplateController::class, 'team']);
+    Route::get('/viewtem', [TemplateController::class, 'team'])->name('viewtem');
     Route::get('/about', [TemplateController::class, 'about']);
     Route::get('/events', [TemplateController::class, 'events']);
     Route::post('/applicationform', [TemplateController::class, 'applicationform'])->name('applicationform');
@@ -22,6 +24,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('location', Location::class)->name('location');
     Route::get('addusers', Addusers::class)->name('addusers');
     Route::get('users', Users::class)->name('users');
+    Route::get('smscategory', Smscategory::class)->name('smscategory');
+    Route::get('addcatgory', Smscategory::class)->name('addcategory');
+    Route::get('clients', Client::class)->name('clients');
+
+    Route::get('team', Team::class)->name('team');
+    Route::get('addteam', Addteam::class)->name('addteam');
+
     Route::get('userprofile', Userprofile::class)->name('userprofile');
 
     Route::view('admin/userlists', 'admin.userlists')->name('userlists');

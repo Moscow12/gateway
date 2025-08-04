@@ -24,8 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($applicantslists as $list)
-                        
+                        @foreach($applicantslists as $list)                        
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">

@@ -25,15 +25,16 @@ class TemplateController extends Controller
         
         return view('frontend.events');
     }
-
+    public function team(){
+        return view('frontend.viewteam');
+    }
     public function gallery(){
         return view('frontend.gallery');
     }
 
     
 
-    public function applicationform(Request $request){
-     
+    public function applicationform(Request $request){     
         $validatedData = $request->validate([
             'ApplicantName' => 'required|string',
             'ApplicantEmail' => 'required|email',

@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone_number');
             $table->string('address');
-            $table->interger('Region_ID')->foreign('Region_ID')->references('id')->on('regions');
-            $table->interger('District_ID')->foreign('District_ID')->references('id')->on('districts');
-            $table->interger('ward_id')->foreign('ward_id')->references('id')->on('wards');
+            $table->integer('Region_ID')->foreign('Region_ID')->references('id')->on('regions');
+            $table->integer('District_ID')->foreign('District_ID')->references('id')->on('districts');
+            $table->integer('ward_id')->foreign('ward_id')->references('id')->on('wards');
             $table->string('street');
             $table->string('zip_code');
             $table->string('country');

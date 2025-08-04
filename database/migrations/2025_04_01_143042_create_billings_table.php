@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('billings', function (Blueprint $table) {
             $table->id();
-            $table->interger('Meter_ID')->foreign('Meter_ID')->references('id')->on('customermeters');
+            $table->integer('Meter_ID')->foreign('Meter_ID')->references('id')->on('customermeters');
             $table->date('readingdate');
             $table->string('readingvalue');
             $table->string('lastreadingvalue');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('attachmentphoto');
             $table->string('status');
             $table->string('TotalAmount');
-            $table->interger('created_by')->foreign('created_by')->references('id')->on('users');
+            $table->integer('created_by')->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

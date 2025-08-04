@@ -39,6 +39,17 @@
                 <div class="menu-title">Users</div>
             </a>
         </li>
+        <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-comment-dots'></i>
+                </div>
+                <div class="menu-title">BULK SMS</div>
+              </a>
+            <ul>
+                <li><a href="{{ route('clients') }} " target="_blank"><i class='bx bx-radio-circle'></i>Clients</a></li>
+                <li><a href="#" target="_blank"><i class='bx bx-radio-circle'></i>Sign Up</a></li>
+                <li><a href="#" target="_blank"><i class='bx bx-radio-circle'></i>Forgot Password</a></li>
+                <li><a href="#" target="_blank"><i class='bx bx-radio-circle'></i>Reset Password</a></li>
+            </ul>
+        </li>
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-cog fs-5"></i>
@@ -48,7 +59,28 @@
             <ul>
                 <li> <a href="{{ route('location') }}" wire:navigate><i class='bx bx-radio-circle'></i>Address</a>
                 </li>
-                <li> <a href="#l"><i class='bx bx-radio-circle'></i>Website Settings</a>
+                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Website Settings</a>
+                    <ul>
+                        <li><a href="#" target="_blank"><i
+                                    class='bx bx-radio-circle'></i>Contacts</a></li>
+                        <li><a href="{{ route('team') }}" ><i
+                                    class='bx bx-radio-circle'></i>Team</a></li>
+                        <li><a href="#" target="_blank"><i
+                                    class='bx bx-radio-circle'></i>Gallery</a></li>
+                        <li><a href="#" target="_blank"><i
+                                    class='bx bx-radio-circle'></i>FAQ</a></li>
+                        <li><a href="#" target="_blank"><i
+                                    class='bx bx-radio-circle'></i>Terms & Conditions</a></li>
+                        <li><a href="#" target="_blank"><i
+                                    class='bx bx-radio-circle'></i>Reset Password</a></li>
+                    </ul>
+                </li>
+                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>SMS Settings</a>
+                    <ul>
+                        <li><a href="{{ route('smscategory') }}">
+                            <i class='bx bx-radio-circle'></i>SMS Category</a>
+                        </li>
+                    </ul>
                 </li>
                 <li> <a href="#"><i class='bx bx-radio-circle'></i>Vacancy Registry</a>
                 </li>

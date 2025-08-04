@@ -83,7 +83,9 @@
                                 <li >
                                    <a href="https://stjosephhospitalmoshi.or.tz/index.php?q=abt">About Us</a>
                                 </li>
-                                
+                                 <li >
+                                   <a href="{{ route('viewtem') }}">Team</a>
+                                </li>
                                 <li class="dropdown">
                                     <span>Departments</span>
                                     <ul>

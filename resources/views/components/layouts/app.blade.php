@@ -17,7 +17,7 @@
 	<!-- Bootstrap CSS -->
 	<link href="{{ asset('admin/css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('admin/css/bootstrap-extended.css') }}" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> -->
 	<link href="{{ asset('admin/css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('admin/css/icons.css') }}" rel="stylesheet">
 	<!-- Theme Style CSS -->
