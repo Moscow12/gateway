@@ -45,9 +45,15 @@
               </a>
             <ul>
                 <li><a href="{{ route('clients') }} " target="_blank"><i class='bx bx-radio-circle'></i>Clients</a></li>
-                <li><a href="#" target="_blank"><i class='bx bx-radio-circle'></i>Sign Up</a></li>
-                <li><a href="#" target="_blank"><i class='bx bx-radio-circle'></i>Forgot Password</a></li>
-                <li><a href="#" target="_blank"><i class='bx bx-radio-circle'></i>Reset Password</a></li>
+            </ul>
+        </li>
+        <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-comment-dots'></i>
+                </div>
+                <div class="menu-title">Employee Attendance</div>
+              </a>
+            <ul>
+                <li><a href="{{ route('clients') }} " ><i class='bx bx-radio-circle'></i>Employee Attendances</a></li>
+                 <li><a href="{{ route('fpempregistered') }} " ><i class='bx bx-radio-circle'></i>FP Employee Registered</a></li>
             </ul>
         </li>
         <li>
