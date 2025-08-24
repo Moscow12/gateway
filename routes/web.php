@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\TemplateController;
-use App\Livewire\Admin\{Addusers, Client, Dashboard, Fpempregistered, Jobs, Location, Smscategory, Userprofile, Users};
+use App\Livewire\Admin\{Addusers, Client, Clientinvoices, Clientpage, Dashboard, Fpempregistered, Jobs, Location, Products, Smscategory, Userprofile, Users, Viewclient};
 use App\Livewire\Admin\Website\Addteam;
 use App\Livewire\Admin\Website\Team;
 use Illuminate\Support\Facades\Auth;
@@ -30,10 +30,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('clientform', Client::class)->name('clientform');
     Route::get('sendsms', Client::class)->name('sendsms');
     Route::get('clients/editclient/{id}', Client::class)->name('clients.editclient');
+    Route::get('clientpage/{id}', Clientpage::class)->name('clientpage');
+    Route::get('clientinvoice/{clientId}/{invoiceId}', Clientinvoices::class)->name('clientinvoice');
+    Route::get('viewclient/{id}', Viewclient::class)->name('viewclient');
     Route::get('team', Team::class)->name('team');
     Route::get('addteam', Addteam::class)->name('addteam');
     Route::get('fpempregistered', Fpempregistered::class)->name('fpempregistered');
     Route::get('userprofile', Userprofile::class)->name('userprofile');
+
+    Route::get('listproducts', Products::class)->name('listproducts');
 
     Route::view('admin/userlists', 'admin.userlists')->name('userlists');
     

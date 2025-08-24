@@ -23,7 +23,7 @@
             <a href="{{ route('applicants') }}">
                 <div class="parent-icon"><i class='bx bx-analyse'></i>
                 </div>
-                <div class="menu-title">JOBS</div>
+                <div class="menu-title">Applications</div>
             </a>
             <ul>
                 <li> <a href="{{ route('applicants') }}"><i class='bx bx-radio-circle'></i>Applicant List</a>
@@ -41,10 +41,10 @@
         </li>
         <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-comment-dots'></i>
                 </div>
-                <div class="menu-title">BULK SMS</div>
+                <div class="menu-title">Registered Clients</div>
               </a>
             <ul>
-                <li><a href="{{ route('clients') }} " target="_blank"><i class='bx bx-radio-circle'></i>Clients</a></li>
+                <li><a href="{{ route('clients') }} " ><i class='bx bx-radio-circle'></i>Clients</a></li>
             </ul>
         </li>
         <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-comment-dots'></i>
@@ -85,6 +85,13 @@
                     <ul>
                         <li><a href="{{ route('smscategory') }}">
                             <i class='bx bx-radio-circle'></i>SMS Category</a>
+                        </li>
+                    </ul>
+                </li>
+                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Products</a>
+                    <ul>
+                        <li><a href="{{ route('listproducts') }}">
+                            <i class='bx bx-radio-circle'></i>list products</a>
                         </li>
                     </ul>
                 </li>

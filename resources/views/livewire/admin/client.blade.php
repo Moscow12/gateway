@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="col-5">
+        <div class="col-5 col-md-5 col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">{{ $isEditMode ? 'Edit Clients Information' : 'Add New Clients Information' }}</h3>
@@ -78,9 +78,7 @@
                                     <th> Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>City</th>
-                                    <th>Country</th>
+                                    <th>Details</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -107,14 +105,11 @@
                                     <td>{{ $client->clientname }}</td>
                                     <td>{{ $client->clientemail }}</td>
                                     <td>{{ $client->clientphone }}</td>
-                                    <td>{{ $client->clientaddress }}</td>
-                                    <td>{{ $client->clientcity }}</td>
-                                    <td>{{ $client->clientcountry }}</td>
+                                    <td><a href="{{ route('clientpage',$client->id) }}" class="btn btn-primary radius-30 mt-2 mt-lg-0">View Details</a> </td>
                                     <td>
-                                        <div class="d-flex order-actions">
-                                            
-                                        <a href="{{ route('clients.editclient',$client->id) }}" class=""><i class='bx bxs-edit'></i></a>
-                                            <button wire:click="delete({{ $client->id }})" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm ms-3"><i class='bx bxs-trash'></i></button>
+                                        <div class="d-flex order-actions">  
+                                        <a href="{{ route('clients.editclient',$client->id) }}" class="btn btn-info btn-sm ms-3"><i class='bx bxs-edit'></i></a>
+                                        <button wire:click="delete({{ $client->id }})" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm ms-3"><i class='bx bxs-trash'></i></button>
                                         </div>
                                     </td>
                                 </tr>
