@@ -8,7 +8,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-    Route::get('/', [TemplateController::class, 'contact'])->name('contact');
+//function to login 
+Route::get('/', function () {
+    return redirect('/login'); // Redirect to login page
+})->name('login');
+Route::post('/login', function (Request $request) {
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+        return redirect()->intended('/dashboard');
+    }
+    return redirect()->back()->withInput($request->only('email', 'password'));
+})->name('login');
+    // Route::get('/', [TemplateController::class, 'contact'])->name('contact');
     Route::get('/applynow', [TemplateController::class, 'contact'])->name('contact');
     Route::get('/viewtem', [TemplateController::class, 'team'])->name('viewtem');
     Route::get('/about', [TemplateController::class, 'about']);
