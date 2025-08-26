@@ -71,4 +71,27 @@ class Clientinvoices extends Component
             $this->invoice_items = invoiceitems::where('invoice_id', $id)->get(); // Refresh list
         }
     }
+
+    public function generateinvoice($clientId, $invoiceId)
+    {
+        $this->clientId = $clientId;
+        $this->invoiceId = $invoiceId;
+        $this->invoice = invoices::findOrFail($invoiceId);
+        $this->invoice->control_number = rand(1000, 9999);
+        $this->invoice->TotalAmount = $this->totalamount;
+        $this->invoice->Status = 'Active';
+        $this->invoice->update();
+        // update invoice
+
+        $this->invoice_items = invoices::findOrFail($invoiceId)->invoiceitems;
+        foreach ($this->invoice_items as $item) {
+            $item->update([
+                'TotalAmount' => $item->amount * $item->quantity,
+                'Status' => 'Active',
+            ]);
+        }
+        session()->flash('message', 'Invoice generated successfully.');
+        $this->reset();
+        $this->listinvoices();
+    }
 }

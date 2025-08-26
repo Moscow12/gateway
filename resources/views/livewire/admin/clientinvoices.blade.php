@@ -1,6 +1,4 @@
 <div>
-    {{-- Be like water. --}}
-
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Applications</div>
@@ -169,7 +167,11 @@
                                         <td>
                                             
                                             @if ($invoice->Status == 'Pending' && $number != 0)
-                                                <a href="{{ route('clientinvoice',['clientId' => $clientId, 'invoiceId' => $invoiceId]) }}" class="btn btn-success btn-sm ms-3">GENERERATE INVOICE</a>
+                                                <form action="" method="POST" wire:submit.prevent="generateinvoice">
+                                                    @csrf
+                                                    <input type="hidden" name="clientId" wire.model="totalamount" value="{{ number_format($totalamount * 1.18) }}">
+                                                    <button type="submit" wire.click="generatinvoice({{  $clientId, $invoiceId }})" class="btn btn-danger btn-sm ms-3">GENERERATE INVOICE</button>
+                                                </form>
                                             @endif
                                         </td>
                                     </tr>

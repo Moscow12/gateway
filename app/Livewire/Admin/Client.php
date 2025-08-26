@@ -7,6 +7,8 @@ use App\Models\Smscategories;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
+use function Laravel\Prompts\alert;
+
 class Client extends Component
 {
     public $clients = [], $selectedClients = [], $selectAll = false, $client_s, $clientId;
@@ -46,7 +48,7 @@ class Client extends Component
         }
     }
 
-    public function updatedSelectedClients()
+    public function updatedSelectedClients($id)
     {
         $this->selectAll = count($this->selectedClients) === $this->client_s->count();
     }
