@@ -470,43 +470,40 @@
         @media print {
             @page {
                 size: A4;
-                margin: 15mm;
+                margin: 10mm;
             }
 
-            /* Hide everything except invoice */
-            .no-print,
-            .page-breadcrumb,
-            .alert,
-            .btn,
-            .btn-group {
-                display: none !important;
+            /* Hide EVERYTHING first */
+            body * {
+                visibility: hidden;
             }
 
-            /* Basic resets */
-            body {
-                background: #fff !important;
-                font-size: 11pt !important;
-                line-height: 1.4 !important;
+            /* Show only invoice print area and its children */
+            .invoice-print-area,
+            .invoice-print-area * {
+                visibility: visible;
             }
 
-            /* Make invoice column full width */
-            .row {
-                display: block !important;
-            }
-
-            .col-12.col-lg-8 {
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 !important;
-            }
-
-            /* Card styling */
+            /* Position invoice at top left */
             .invoice-print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
                 border: none !important;
                 box-shadow: none !important;
+                background: #fff !important;
             }
 
             .invoice-print-area .card-body {
+                padding: 20px !important;
+            }
+
+            /* Body reset */
+            body {
+                background: #fff !important;
+                font-size: 11pt !important;
+                margin: 0 !important;
                 padding: 0 !important;
             }
 
@@ -517,17 +514,19 @@
             }
 
             .invoice-header .col-md-6 {
-                width: 50% !important;
+                width: 48% !important;
+                flex: 0 0 48% !important;
             }
 
             /* Invoice details row */
-            .row.mb-4 {
+            .invoice-print-area .row.mb-4 {
                 display: flex !important;
                 justify-content: space-between !important;
             }
 
-            .row.mb-4 .col-md-6 {
-                width: 50% !important;
+            .invoice-print-area .row.mb-4 .col-md-6 {
+                width: 48% !important;
+                flex: 0 0 48% !important;
             }
 
             /* Table */
@@ -584,29 +583,26 @@
             .badge.bg-info { background: #17a2b8 !important; color: #fff !important; }
             .badge.bg-danger { background: #dc3545 !important; color: #fff !important; }
 
-            /* Footer */
-            .mt-4 .row {
+            /* Footer row */
+            .invoice-print-area .mt-4 .row {
                 display: flex !important;
                 justify-content: space-between !important;
             }
 
-            .mt-4 .col-md-6 {
-                width: 50% !important;
+            .invoice-print-area .mt-4 .col-md-6 {
+                width: 48% !important;
+                flex: 0 0 48% !important;
             }
 
-            /* Item icon */
+            /* Item icon - hide for cleaner print */
             .item-icon {
-                display: inline-block !important;
-                width: 24px !important;
-                height: 24px !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
+                display: none !important;
             }
 
-            /* Hide box icons text artifacts */
-            .bx:before {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
+            /* Hide action buttons column */
+            .no-print {
+                display: none !important;
+                visibility: hidden !important;
             }
         }
     </style>
