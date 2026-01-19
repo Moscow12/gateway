@@ -250,17 +250,37 @@
                     <div class="invoice-header mb-4">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <img src="{{ asset('admin/images/logo-icon.png') }}" width="60" alt="Logo" class="mb-2">
+                                @if($company?->logo)
+                                    <img src="{{ asset('storage/' . $company->logo) }}" width="80" alt="Logo" class="mb-2">
+                                @else
+                                    <div class="company-logo-placeholder bg-primary bg-opacity-10 rounded d-inline-flex align-items-center justify-content-center mb-2" style="width: 80px; height: 80px;">
+                                        <i class="bx bx-building text-primary fs-1"></i>
+                                    </div>
+                                @endif
                                 <h4 class="text-primary mb-0">INVOICE</h4>
                                 <p class="text-muted mb-0">#INV-{{ $invoice?->user->id ?? '0' }}-{{ $clientId }}-{{ $invoiceId }}</p>
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <h5 class="mb-1">{{ config('app.name', 'Company Name') }}</h5>
+                                <h5 class="mb-1">{{ $company?->company_name ?? config('app.name', 'Company Name') }}</h5>
                                 <p class="text-muted mb-0 small">
-                                    455 Foggy Heights, AZ 85004, US<br>
-                                    (123) 456-789<br>
-                                    company@example.com
+                                    {{ $company?->address ?? 'Address not set' }}<br>
+                                    {{ $company?->phone ?? 'Phone not set' }}<br>
+                                    {{ $company?->email ?? 'Email not set' }}
+                                    @if($company?->website)
+                                        <br>{{ $company->website }}
+                                    @endif
                                 </p>
+                                @if($company?->tax_number || $company?->vat_number)
+                                    <p class="text-muted mb-0 small mt-1">
+                                        @if($company?->tax_number)
+                                            <strong>TIN:</strong> {{ $company->tax_number }}
+                                        @endif
+                                        @if($company?->vat_number)
+                                            @if($company?->tax_number) | @endif
+                                            <strong>VAT:</strong> {{ $company->vat_number }}
+                                        @endif
+                                    </p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -423,9 +443,27 @@
                                     @if($invoice?->control_number)
                                         <strong>Control Number:</strong> {{ $invoice->control_number }}<br>
                                     @endif
-                                    <strong>Bank:</strong> Bank Name<br>
-                                    <strong>Account:</strong> 1234567890
+                                    @if($company?->bank_name)
+                                        <strong>Bank:</strong> {{ $company->bank_name }}<br>
+                                    @endif
+                                    @if($company?->bank_account)
+                                        <strong>Account:</strong> {{ $company->bank_account }}<br>
+                                    @endif
+                                    @if($company?->iban)
+                                        <strong>IBAN:</strong> {{ $company->iban }}<br>
+                                    @endif
+                                    @if($company?->swift_bic)
+                                        <strong>SWIFT/BIC:</strong> {{ $company->swift_bic }}
+                                    @endif
+                                    @if(!$company?->bank_name && !$company?->bank_account)
+                                        <span class="text-muted">Bank details not configured</span>
+                                    @endif
                                 </p>
+                                @if($company?->bank_address)
+                                    <p class="small text-muted mb-0 mt-1">
+                                        {{ $company->bank_address }}
+                                    </p>
+                                @endif
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <h6 class="text-muted">Notes</h6>
@@ -440,6 +478,18 @@
                         <div class="text-center text-muted small">
                             <p class="mb-0">Thank you for your business!</p>
                             <p class="mb-0">Invoice was created on a computer and is valid without signature and seal.</p>
+                            @if($company?->company_name)
+                                <p class="mb-0 mt-2"><strong>{{ $company->company_name }}</strong></p>
+                                @if($company?->phone)
+                                    <span>{{ $company->phone }}</span>
+                                @endif
+                                @if($company?->email)
+                                    | <span>{{ $company->email }}</span>
+                                @endif
+                                @if($company?->website)
+                                    | <span>{{ $company->website }}</span>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>

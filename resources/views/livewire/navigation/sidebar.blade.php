@@ -63,17 +63,22 @@
                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Website Settings</a>
                     <ul>
                         <li><a href="#" target="_blank"><i
+                                    class='bx bx-radio-circle'></i>Services Offered</a></li>
+                        <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Contacts</a></li>
                         <li><a href="{{ route('team') }}" ><i
                                     class='bx bx-radio-circle'></i>Team</a></li>
                         <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Gallery</a></li>
+                        
                         <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>FAQ</a></li>
                         <li><a href="#" target="_blank"><i
                                     class='bx bx-radio-circle'></i>Terms & Conditions</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Reset Password</a></li>
+                        
+                                    
+                        
+
                     </ul>
                 </li>
                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>SMS Settings</a>
@@ -94,9 +99,12 @@
                 </li>
                 <li> 
                     <a href="{{ route('users') }}"  >
-                        <div class="parent-icon"><i class="bx bx-user-circle"></i>
-                        </div>
-                        <div class="menu-title">Users</div>
+                         <i class='bx bx-radio-circle'></i>Users</a>
+                    </a>
+                </li>
+                <li> 
+                    <a href="{{ route('companydetails') }}"  >
+                         <i class='bx bx-radio-circle'></i>Company Details</a>
                     </a>
                 </li>
                 

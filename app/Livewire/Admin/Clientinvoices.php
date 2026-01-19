@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\{Producties, invoiceitems, Clients, invoices, ServiceType};
+use App\Models\{Producties, invoiceitems, Clients, invoices, ServiceType, companydetail};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +16,14 @@ class Clientinvoices extends Component
     public $isEditMode = false, $editItemId;
     public $invoicetotal;
     public $itemType = 'service'; // 'service' or 'product'
+    public $company; // Company details
 
     public function mount($clientId, $invoiceId)
     {
         $this->clientId = $clientId;
         $this->invoiceId = $invoiceId;
         $this->client = Clients::findOrFail($clientId);
+        $this->company = companydetail::first();
         $this->loadinvoiceitems($invoiceId);
         $this->loadinvoice($invoiceId);
         $this->serviceTypes = ServiceType::orderBy('name')->get();
