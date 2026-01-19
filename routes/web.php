@@ -1,18 +1,31 @@
 <?php
 
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\WebsiteController;
 use App\Livewire\Admin\{Addusers, Applicantdetails, Client, ClientServices, Clientinvoices, Clientpage, Companydetails, Dashboard, Fpempregistered, Jobs, Location, Products, ServiceTypes, Smscategory, Userprofile, Users, Viewclient};
-use App\Livewire\Admin\{HeroSectionManager, AboutContentManager, GalleryManager, TestimonialManager, PartnerManager};
+use App\Livewire\Admin\{HeroSectionManager, AboutContentManager, GalleryManager, TestimonialManager, PartnerManager, ServiceManager};
 use App\Livewire\Admin\Website\Addteam;
 use App\Livewire\Admin\Website\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-//function to login 
-Route::get('/', function () {
-    return redirect('/login'); // Redirect to login page
-})->name('login');
+// Public Website Routes
+Route::get('/', [WebsiteController::class, 'home'])->name('home');
+Route::get('/about-us', [WebsiteController::class, 'about'])->name('about-us');
+Route::get('/services', [WebsiteController::class, 'services'])->name('services');
+Route::get('/portfolio', [WebsiteController::class, 'portfolio'])->name('portfolio');
+Route::get('/contact-us', [WebsiteController::class, 'contact'])->name('contact-us');
+Route::post('/contact-submit', [WebsiteController::class, 'contactSubmit'])->name('contact-submit');
+
+// Legacy routes (old template)
+Route::get('/applynow', [TemplateController::class, 'contact'])->name('contact');
+Route::get('/viewtem', [TemplateController::class, 'team'])->name('viewtem');
+Route::get('/about', [TemplateController::class, 'about']);
+Route::get('/events', [TemplateController::class, 'events']);
+Route::post('/applicationform', [TemplateController::class, 'applicationform'])->name('applicationform');
+
+// Authentication
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
@@ -20,12 +33,6 @@ Route::post('/login', function (Request $request) {
     }
     return redirect()->back()->withInput($request->only('email', 'password'));
 })->name('login');
-    // Route::get('/', [TemplateController::class, 'contact'])->name('contact');
-    Route::get('/applynow', [TemplateController::class, 'contact'])->name('contact');
-    Route::get('/viewtem', [TemplateController::class, 'team'])->name('viewtem');
-    Route::get('/about', [TemplateController::class, 'about']);
-    Route::get('/events', [TemplateController::class, 'events']);
-    Route::post('/applicationform', [TemplateController::class, 'applicationform'])->name('applicationform');
 
 
 // Dashboard routes
@@ -61,6 +68,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('gallery', GalleryManager::class)->name('gallery');
     Route::get('testimonials', TestimonialManager::class)->name('testimonials');
     Route::get('partners', PartnerManager::class)->name('partners');
+    Route::get('website-services', ServiceManager::class)->name('website-services');
 
     Route::view('admin/userlists', 'admin.userlists')->name('userlists');
     

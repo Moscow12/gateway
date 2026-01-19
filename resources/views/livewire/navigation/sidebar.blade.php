@@ -63,6 +63,7 @@
                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Website Content</a>
                     <ul>
                         <li><a href="{{ route('hero-sections') }}"><i class='bx bx-radio-circle'></i>Hero Sections</a></li>
+                        <li><a href="{{ route('website-services') }}"><i class='bx bx-radio-circle'></i>Services</a></li>
                         <li><a href="{{ route('about-content') }}"><i class='bx bx-radio-circle'></i>About Company</a></li>
                         <li><a href="{{ route('gallery') }}"><i class='bx bx-radio-circle'></i>Gallery</a></li>
                         <li><a href="{{ route('testimonials') }}"><i class='bx bx-radio-circle'></i>Testimonials</a></li>
