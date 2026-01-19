@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->share('teams', \App\Models\Teams::all());
+        try {
+            view()->share('teams', \App\Models\Teams::all());
+        } catch (\Exception $e) {
+            view()->share('teams', collect());
+        }
     }
 }

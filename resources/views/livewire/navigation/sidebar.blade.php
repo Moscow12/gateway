@@ -32,13 +32,7 @@
                 </li>
             </ul>
         </li>
-        <li> 
-            <a href="{{ route('users') }}"  >
-                <div class="parent-icon"><i class="bx bx-user-circle"></i>
-                </div>
-                <div class="menu-title">Users</div>
-            </a>
-        </li>
+       
         <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-comment-dots'></i>
                 </div>
                 <div class="menu-title">Registered Clients</div>
@@ -47,15 +41,7 @@
                 <li><a href="{{ route('clients') }} " ><i class='bx bx-radio-circle'></i>Clients</a></li>
             </ul>
         </li>
-        <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-comment-dots'></i>
-                </div>
-                <div class="menu-title">Employee Attendance</div>
-              </a>
-            <ul>
-                <li><a href="{{ route('clients') }} " ><i class='bx bx-radio-circle'></i>Employee Attendances</a></li>
-                 <li><a href="{{ route('fpempregistered') }} " ><i class='bx bx-radio-circle'></i>FP Employee Registered</a></li>
-            </ul>
-        </li>
+       
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-cog fs-5"></i>
@@ -97,20 +83,14 @@
                 </li>
                 <li> <a href="#"><i class='bx bx-radio-circle'></i>Vacancy Registry</a>
                 </li>
-                <li> <a href="#"><i class='bx bx-radio-circle'></i>Updates</a>
+                <li> 
+                    <a href="{{ route('users') }}"  >
+                        <div class="parent-icon"><i class="bx bx-user-circle"></i>
+                        </div>
+                        <div class="menu-title">Users</div>
+                    </a>
                 </li>
-                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Cover</a>
-                    <ul>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Sign In</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Sign Up</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Forgot Password</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Reset Password</a></li>
-                    </ul>
-                </li>
+                
             </ul>
         </li>
     </ul>

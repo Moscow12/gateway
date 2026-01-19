@@ -1,4 +1,11 @@
 <div>
+    @php
+    $pending = $statusAmount?->firstWhere('status', 'Pending');
+    $Paid = $statusAmount?->firstWhere('status', 'Paid');
+    $Active = $statusAmount?->firstWhere('status', 'Active');
+    $Expired = $statusAmount?->firstWhere('status', 'Expired');
+
+    @endphp
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Client Details</div>
@@ -13,13 +20,13 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
+                <button type="button" class="btn btn-primary">Back</button>
+                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+                    <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
                 </div>
             </div>
         </div>
@@ -29,25 +36,48 @@
         <div class="col-12 col-lg-3">
             <div class="card">
                 <div class="card-body">
+                    @if (session()->has('success'))
+                    <div
+                        x-data="{ show: true }"
+                        x-show="show"
+                        x-init="setTimeout(() => show = false, 3000)"
+                        class="bg-green-500 text-white p-2 rounded mb-3">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
                     <form wire:submit.prevent="createinvoice">
                         <div class="d-grid"> <button href="javascript:;" class="btn btn-primary">+ Create invoice</button>
-                    </div>
+                        </div>
                     </form>
-                    
+
                     <h5 class="my-3">Client File</h5>
                     <div class="fm-menu">
                         <div class="list-group list-group-flush"> <a href="javascript:;" class="list-group-item py-1"><i class='bx bx-folder me-2'></i><span>All Files</span></a>
                             <a href="javascript:;" class="list-group-item py-1"><i class='bx bx-analyse me-2'></i><span>Recents</span></a>
                             <a href="javascript:;" class="list-group-item py-1"><i class='bx bx-plug me-2'></i><span>Reported Issues</span></a>
                             <a href="javascript:;" class="list-group-item py-1"><i class='bx bx-trash-alt me-2'></i><span>Deleted Invoices</span></a>
-                           
+
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="mb-0 text-primary font-weight-bold">5,500,000 <span class="float-end text-secondary">2,500,000</span></h5>
+                    <h5 class="mb-0 text-primary font-weight-bold">
+                        @if($Paid)
+                        {{ number_format($Paid->total, 2) }}
+                        @else
+                        0
+                        @endif
+                        <span class="float-end text-secondary">
+                            @if($pending)
+                            {{ number_format($pending->total, 2) }}
+                            @else
+                            0
+                            @endif
+                        </span>
+                    </h5>
                     <p class="mb-0 mt-2"><span class="text-secondary">Paid</span><span class="float-end text-primary">Pending</span>
                     </p>
                     <div class="progress mt-3" style="height:7px;">
@@ -61,37 +91,76 @@
                         </div>
                         <div class="flex-grow-1 ms-2">
                             <h6 class="mb-0">Paid</h6>
-                            <p class="mb-0 text-success">1,7 Invoices</p>
+                            @if($Paid)
+                            <p class="mb-0 text-success">{{ $Paid->count() ?? 0 }} Invoices</p>
+                            @else
+                            <p class="mb-0 text-success">0</p>
+                            @endif
                         </div>
-                        <h6 class="text-primary mb-0">5,500,000</h6>
+                        @if($Paid)
+                        <h6 class="text-success mb-0"> {{ number_format($Paid->total, 2) }} </h6>
+                        @else
+                        <h6 class="text-primary mb-0">0</h6>
+                        @endif
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="fm-file-box bg-light-warning text-warning"><i class='bx bx-image'></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <h6 class="mb-0">Active</h6>
+                            @if($Active)
+                            <p class="mb-0 text-warning">{{ $Active->count() ?? 0 }} Invoices</p>
+                            @else
+                            <p class="mb-0 text-warning">0</p>
+                            @endif
+                        </div>
+                        @if($Active)
+                        <h6 class="text-warning mb-0"> {{ number_format($Active->total, 2) }} </h6>
+                        @else
+                        <h6 class="text-primary mb-0">0</h6>
+                        @endif
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div class="fm-file-box bg-light-primary text-primary"><i class='bx bxs-file-doc'></i>
                         </div>
                         <div class="flex-grow-1 ms-2">
                             <h6 class="mb-0">Pending Invoices</h6>
-                            <p class="mb-0 text-secondary">7 Invoices</p>
+                            <p class="mb-0 text-secondary">{{ $pending->count ?? 0 }} </p>
                         </div>
-                        <h6 class="text-primary mb-0">2,500,000</h6>
+
+                        @if($pending)
+                        <h6 class="text-primary mb-0"> {{ number_format($pending->total, 2) }} </h6>
+                        @else
+                        <h6 class="text-primary mb-0">0</h6>
+                        @endif
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div class="fm-file-box bg-light-danger text-danger"><i class='bx bx-video'></i>
                         </div>
                         <div class="flex-grow-1 ms-2">
                             <h6 class="mb-0">Exipired Invoices</h6>
-                            <p class="mb-0 text-secondary">4 invoices</p>
+                            @if($Expired)
+                            <p class="mb-0 text-danger">{{ $Expired->count ?? 0 }} invoices</p>
+                            @else
+                            <p class="mb-0 text-danger">0</p>
+                            @endif
+
                         </div>
-                        <h6 class="text-primary mb-0">1,000,000</h6>
+                        @if($Expired)
+                        <h6 class="text-danger mb-0"> {{ number_format($Expired->total, 2) }} </h6>
+                        @else
+                        <h6 class="text-danger mb-0">0</h6>
+                        @endif
                     </div>
-                    
-                    
+
+
                 </div>
             </div>
         </div>
         <div class="col-12 col-lg-9">
             <div class="card shadow-none border radius-15">
                 <div class="card-body">
-                   
+
                     <div class="d-flex align-items-center">
                         <div>
                             <h5 class="mb-0">Recent invoices</h5>
@@ -141,7 +210,7 @@
                                     <td>{{ $invoice->Status }}</td>
                                     <td>
                                         <div class="d-flex order-actions">
-                                            <a href="{{ route('clientinvoice',['clientId' => $invoice->client_id, 'invoiceId' => $invoice->id]) }}" class="btn btn-info btn-sm ms-3"><i class='bx bxs-edit'></i></a>
+                                            <a href="{{ route('clientinvoice',['clientId' => $invoice->client_id, 'invoiceId' => $invoice->id]) }}" class="btn btn-info btn-sm ms-3"><i class='bx bxs-file-doc'></i></a>
                                             <button wire:click="delete({{ $invoice->id }})" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm ms-3"><i class='bx bxs-trash'></i></button>
                                         </div>
                                     </td>

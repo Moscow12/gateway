@@ -78,6 +78,7 @@
                                     <th> Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
+                                    <th>Code</th>
                                     <th>Details</th>
                                     <th>Actions</th>
                                 </tr>
@@ -105,6 +106,7 @@
                                     <td>{{ $client->clientname }}</td>
                                     <td>{{ $client->clientemail }}</td>
                                     <td>{{ $client->clientphone }}</td>
+                                    <td>{{ $client->Clientcode }}</td>
                                     <td><a href="{{ route('clientpage',$client->id) }}" class="btn btn-primary radius-30 mt-2 mt-lg-0">View Details</a> </td>
                                     <td>
                                         <div class="d-flex order-actions">  

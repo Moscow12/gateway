@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\invoiceitems;
 use App\Models\invoices;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Clientpage extends Component
@@ -11,12 +13,18 @@ class Clientpage extends Component
     public $invoices = [], $selectedInvoices = [], $selectAll = false, $invoice_s, $invoiceId, $clientId;
     public $search = '', $categories;  
     public $isEditMode = false; 
-    public $control_number, $TotalAmount, $Status;
+    public $control_number, $TotalAmount, $Status, $statusAmount;
+
 
     public function mount($id)
     {
         $this->clientId = $id;
         $this->invoices = invoices::where('client_id', $id)->get();
+        $this->statusAmount = Invoices::where('client_id', $id)
+                                ->join('invoiceitems as it', 'invoices.id', '=', 'it.invoice_id')
+                                ->select('invoices.status', DB::raw('SUM(it.amount) as total'), DB::raw('COUNT(it.id) as count'))
+                                ->groupBy('invoices.status')
+                                ->get();
 
     }
     public function render()
@@ -34,7 +42,7 @@ class Clientpage extends Component
                 'Status' => $this->Status,
             ]);
             session()->flash('message', 'Invoice updated successfully.');
-            $this->reset();
+            
             $this->listinvoices();
         }else{
             invoices::create([
@@ -42,7 +50,7 @@ class Clientpage extends Component
                 'added_by' => Auth::user()->id
             ]);
             session()->flash('message', 'Invoice added successfully.');        
-            $this->reset();
+            
             $this->listinvoices();
         }
     }
@@ -54,10 +62,14 @@ class Clientpage extends Component
     
     public function delete($id)
     {
-        $item = invoices::find($id);
-        if ($item) {
-            $item->delete();
-            $this->invoices = invoices::where('client_id', $id)->get(); // Refresh list
+        $invoice = Invoices::find($id);
+
+        if ($invoice) {
+            // Delete invoice
+            $invoice->delete();
+
+            // Refresh invoice list for this client
+            $this->invoices = Invoices::where('client_id', $invoice->client_id)->get();
         }
     }
 

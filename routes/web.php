@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\TemplateController;
-use App\Livewire\Admin\{Addusers, Client, Clientinvoices, Clientpage, Dashboard, Fpempregistered, Jobs, Location, Products, Smscategory, Userprofile, Users, Viewclient};
+use App\Livewire\Admin\{Addusers, Applicantdetails, Client, Clientinvoices, Clientpage, Dashboard, Fpempregistered, Jobs, Location, Products, Smscategory, Userprofile, Users, Viewclient};
 use App\Livewire\Admin\Website\Addteam;
 use App\Livewire\Admin\Website\Team;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('jobslist', Jobs::class)->name('jobslist');
     Route::get('applicants', Jobs::class)->name('applicants');
+    Route::get('applicantdetails/{id}', Applicantdetails::class)->name('applicantdetails');
     Route::get('location', Location::class)->name('location');
     Route::get('addusers', Addusers::class)->name('addusers');
     Route::get('users', Users::class)->name('users');

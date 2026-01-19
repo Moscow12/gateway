@@ -4,19 +4,21 @@ namespace App\Livewire\Admin;
 
 use App\Models\{Producties, invoiceitems, Clients, invoices};
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Clientinvoices extends Component
 {
     Public $clientId, $invoiceId, $invoice_items, $control_number, $TotalAmount, $Status, $client, $products, $invoice ;
-    public $product_id, $quantity, $amount, $isEditMode = false, $description;
+    public $product_id, $quantity, $amount, $isEditMode = false, $description, $invoicetotal;
     public function mount($clientId, $invoiceId)
     {
         $this->clientId = $clientId;
         $this->invoiceId = $invoiceId;
         $this->client = Clients::findOrFail($clientId);
-        $this->invoice_items = invoiceitems::where('invoice_id', $invoiceId)->get();
-        $this->invoice = invoices::findOrFail($invoiceId);
+        $this->loadinvoiceitems($invoiceId);
+        $this->loadinvoice($invoiceId);
         $this->products = Producties::all();
     }
 
@@ -24,6 +26,17 @@ class Clientinvoices extends Component
     {
         return view('livewire.admin.clientinvoices');
     }
+
+    public function loadinvoiceitems($invoiceId)
+    {        
+        $this->invoice_items = invoiceitems::where('invoice_id', $invoiceId)->get();
+    }
+
+    public function loadinvoice($invoiceId)
+    {
+        $this->invoice = invoices::findOrFail($invoiceId);
+    }
+
     public function addItem()
     {
         $this->validate([
@@ -41,8 +54,8 @@ class Clientinvoices extends Component
                 'description' => $this->description,
             ]);
             session()->flash('message', 'Invoice updated successfully.');
-            $this->reset();
-            $this->listinvoices();
+            $this->reset(['product_id', 'amount', 'Status', 'description', 'isEditMode']);
+            $this->loadinvoiceitems($this->invoiceId);
         }else{
             invoiceitems::create([
                 'product_id' => $this->product_id,
@@ -53,8 +66,8 @@ class Clientinvoices extends Component
                 'added_by' => Auth::user()->id
             ]);
             session()->flash('message', 'Invoice added successfully.');        
-            $this->reset();
-            $this->listinvoices();
+            $this->reset(['product_id', 'amount', 'Status', 'description', 'isEditMode']);
+            $this->loadinvoiceitems($this->invoiceId);
         }
     }
 
@@ -68,22 +81,27 @@ class Clientinvoices extends Component
         $item = invoiceitems::find($id);
         if ($item) {
             $item->delete();
-            $this->invoice_items = invoiceitems::where('invoice_id', $id)->get(); // Refresh list
         }
+        $this->loadinvoiceitems($this->invoiceId);
     }
 
-    public function generateinvoice($clientId, $invoiceId)
+    public function generateinvoice()
     {
-        $this->clientId = $clientId;
-        $this->invoiceId = $invoiceId;
-        $this->invoice = invoices::findOrFail($invoiceId);
-        $this->invoice->control_number = rand(1000, 9999);
-        $this->invoice->TotalAmount = $this->totalamount;
+        // calculate total amount
+        $this->invoicetotal = invoiceitems::where('invoice_id', $this->invoiceId)
+                            ->select(DB::raw('SUM(amount * quantity) as total'))
+                            ->get();
+        
+        $this->invoice = invoices::findOrFail($this->invoiceId);
+        $this->invoice->control_number = rand(80000000, 999900000).$this->clientId.Date::now()->format('y');
+        $this->invoice->TotalAmount = $this->invoicetotal[0]->total;
+        $this->invoice->ControlNumberExpiretime = now()->addDays(30);
+        $this->invoice->controlno_generatedtime = now();
         $this->invoice->Status = 'Active';
         $this->invoice->update();
         // update invoice
 
-        $this->invoice_items = invoices::findOrFail($invoiceId)->invoiceitems;
+        $this->invoice_items = invoices::findOrFail($this->invoiceId)->invoiceitems;
         foreach ($this->invoice_items as $item) {
             $item->update([
                 'TotalAmount' => $item->amount * $item->quantity,
@@ -91,7 +109,6 @@ class Clientinvoices extends Component
             ]);
         }
         session()->flash('message', 'Invoice generated successfully.');
-        $this->reset();
-        $this->listinvoices();
+        $this->loadinvoiceitems($this->invoiceId);
     }
 }

@@ -60,16 +60,24 @@
                             <div class="row contacts">
                                 <div class="col invoice-to">
                                     <div class="text-gray-light">INVOICE TO:</div>
-                                    <h2 class="to">{{ $client->clientname }}</h2>
-                                    <div class="address"> {{ $client->clientaddress }}</div>
-                                    <div class="email"><a href="mailto:{{ $client->clientemail }}">{{ $client->clientemail }}</a>
+                                    <h2 class="to">{{ $client?->clientname }}</h2>
+                                    <div class="address"> {{ $client?->clientaddress }}</div>
+                                    <div class="email"><a href="mailto:{{ $client?->clientemail }}">{{ $client?->clientemail }}</a>
                                     
                                     </div>
                                 </div>
                                 <div class="col invoice-details">
-                                    <h1 class="invoice-id">INVOICE NO.# {{ $invoice->user->id }}-{{ $clientId }}-{{ $invoiceId }}</h1>
-                                    <div class="date">Date of Invoice: {{ $invoice->created_at }}</div>
-                                    <div class="date">Due Date: 30 days  {{ $invoice->created_at->addDays(30) }}</div>
+                                    <h1 class="invoice-id">INVOICE NO.# {{ $invoice?->user->id }}-{{ $clientId }}-{{ $invoiceId }}</h1>
+                                    <div class="date">Date of Invoice: {{ $invoice?->created_at }}</div>
+                                    <div class="date">Due Date: 30 days  {{ $invoice?->ControlNumberExpiretime }}</div>
+                                    <div class="date">Total Amount: {{ number_format($invoice?->TotalAmount) }}</div>
+                                    <div class="date"> Control Number:
+                                        @if ($invoice?->Status == 'Pending')
+                                            <span class="badge bg-warning text-dark"> {{ $invoice?->Status }} </span>
+                                        @else
+                                             <span class="badge bg-success text-light">  {{ $invoice?->control_number }} </span>
+                                        @endif
+
                                 </div>
                             </div>
                             <div class="col-12">
@@ -131,10 +139,10 @@
                                     <tr>
                                         <td class="no">{{ $number }}</td>
                                         <td class="text-left">
-                                            <h3>{{ $item->product->productname }}</h3>{{ $item->description }}
+                                            <h3>{{ $item->product->productname ?? 'N/A' }}</h3>{{ $item->description ?? 'N/A' }}
                                         </td>
-                                        <td class="qty"> {{ $item->quantity }}</td>
-                                        <td class="unit">{{ number_format($item->amount) }} <br/> Price Range ({{ number_format($item->product->topprice) }} - {{ number_format($item->product->initialprice) }})</td>
+                                        <td class="qty"> {{ $item->quantity ?? 'N/A' }}</td>
+                                        <td class="unit">{{ number_format($item->amount) ?? 0 }} <br/> Price Range ({{ number_format($item->product->topprice) }} - {{ number_format($item->product->initialprice) }})</td>
                                         
                                         <td class="total">{{ number_format($item->quantity * $item->amount) }}</td>
                                         <td class="content-center">
@@ -166,13 +174,17 @@
                                         <td> {{ number_format($totalamount * 1.18) }}</td>
                                         <td>
                                             
-                                            @if ($invoice->Status == 'Pending' && $number != 0)
+                                            @if ($invoice?->Status == 'Pending' && $number != 0)
                                                 <form action="" method="POST" wire:submit.prevent="generateinvoice">
                                                     @csrf
-                                                    <input type="hidden" name="clientId" wire.model="totalamount" value="{{ number_format($totalamount * 1.18) }}">
-                                                    <button type="submit" wire.click="generatinvoice({{  $clientId, $invoiceId }})" class="btn btn-danger btn-sm ms-3">GENERERATE INVOICE</button>
+                                                    <button type="submit"  class="btn btn-danger btn-sm ms-3">GENERERATE INVOICE</button>
                                                 </form>
+                                            @else
+                                            <span class="float-end text-success">Control Number: {{ $invoice?->control_number }}</span>
+                                                
                                             @endif
+
+                                            
                                         </td>
                                     </tr>
                                 </tfoot>
