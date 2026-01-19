@@ -60,25 +60,14 @@
             <ul>
                 <li> <a href="{{ route('location') }}" wire:navigate><i class='bx bx-radio-circle'></i>Address</a>
                 </li>
-                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Website Settings</a>
+                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Website Content</a>
                     <ul>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Services Offered</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Contacts</a></li>
-                        <li><a href="{{ route('team') }}" ><i
-                                    class='bx bx-radio-circle'></i>Team</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Gallery</a></li>
-                        
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>FAQ</a></li>
-                        <li><a href="#" target="_blank"><i
-                                    class='bx bx-radio-circle'></i>Terms & Conditions</a></li>
-                        
-                                    
-                        
-
+                        <li><a href="{{ route('hero-sections') }}"><i class='bx bx-radio-circle'></i>Hero Sections</a></li>
+                        <li><a href="{{ route('about-content') }}"><i class='bx bx-radio-circle'></i>About Company</a></li>
+                        <li><a href="{{ route('gallery') }}"><i class='bx bx-radio-circle'></i>Gallery</a></li>
+                        <li><a href="{{ route('testimonials') }}"><i class='bx bx-radio-circle'></i>Testimonials</a></li>
+                        <li><a href="{{ route('partners') }}"><i class='bx bx-radio-circle'></i>Partners</a></li>
+                        <li><a href="{{ route('team') }}"><i class='bx bx-radio-circle'></i>Team</a></li>
                     </ul>
                 </li>
                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>SMS Settings</a>
