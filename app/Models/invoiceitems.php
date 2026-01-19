@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class invoiceitems extends Model
 {
     protected $table = 'invoiceitems';
-    protected $fillable = ['product_id', 'invoice_id', 'amount', 'description', 'quantity','added_by'];
+    protected $fillable = ['product_id', 'service_type_id', 'invoice_id', 'amount', 'description', 'quantity', 'added_by', 'Status', 'TotalAmount'];
 
     public function user()
     {
@@ -19,8 +19,25 @@ class invoiceitems extends Model
         return $this->belongsTo(Producties::class, 'product_id');
     }
 
+    public function serviceType()
+    {
+        return $this->belongsTo(ServiceType::class, 'service_type_id');
+    }
+
     public function invoice()
     {
         return $this->belongsTo(invoices::class, 'invoice_id');
+    }
+
+    // Get the item name (service or product)
+    public function getItemNameAttribute()
+    {
+        if ($this->serviceType) {
+            return $this->serviceType->name;
+        }
+        if ($this->product) {
+            return $this->product->productname;
+        }
+        return 'Unknown Item';
     }
 }

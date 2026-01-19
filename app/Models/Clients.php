@@ -8,6 +8,7 @@ class Clients extends Model
 {
     protected $table = 'clients';
     public $fillable = [
+        'clientcode',
         'clientname',
         'clientemail',
         'clientphone',
@@ -26,5 +27,15 @@ class Clients extends Model
     public function invoices()
     {
         return $this->hasMany(invoices::class, 'client_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(ClientService::class, 'client_id');
+    }
+
+    public function activeServices()
+    {
+        return $this->services()->where('status', ClientService::STATUS_ACTIVE);
     }
 }

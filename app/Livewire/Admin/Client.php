@@ -43,7 +43,7 @@ class Client extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selectedClients = $this->client_s->pluck('id')->toArray();
+            $this->selectedClients = collect($this->clients)->pluck('id')->toArray();
         } else {
             $this->selectedClients = [];
         }
@@ -51,7 +51,7 @@ class Client extends Component
 
     public function updatedSelectedClients($id)
     {
-        $this->selectAll = count($this->selectedClients) === $this->client_s->count();
+        $this->selectAll = count($this->selectedClients) === count($this->clients);
     }
    
 
@@ -70,13 +70,13 @@ class Client extends Component
                 'clientphone' => $this->clientphone,
                 'clientaddress' => $this->clientaddress,
                 'clientcity' => $this->clientcity,
-                'clientcode' => Str::upper($this->clientcode),
                 'clientcountry' => $this->clientcountry,
             ]);
             session()->flash('message', 'Client updated successfully.');
-            $this->reset(['clientname', 'clientemail', 'clientphone', 'clientaddress', 'clientcity', 'clientcountry', 'isEditMode']);
+            $this->resetFormFields();
             $this->listclients();
-        }else{
+            $this->dispatch('close-modal');
+        } else {
             Clients::create([
                 'clientname' => $this->clientname,
                 'clientemail' => $this->clientemail,
@@ -87,9 +87,10 @@ class Client extends Component
                 'clientcountry' => $this->clientcountry,
                 'added_by' => Auth::user()->id
             ]);
-            session()->flash('message', 'Client added successfully.');        
-            $this->reset(['clientname', 'clientemail', 'clientphone', 'clientaddress', 'clientcity', 'clientcountry']);
+            session()->flash('message', 'Client added successfully.');
+            $this->resetFormFields();
             $this->listclients();
+            $this->dispatch('close-modal');
         }
     }
     public function listclients()
@@ -103,6 +104,34 @@ class Client extends Component
         if ($item) {
             $item->delete();
             $this->clients = Clients::all(); // Refresh list
+            session()->flash('message', 'Client deleted successfully.');
         }
+    }
+
+    public function editClient($id)
+    {
+        $this->resetFormFields();
+        $this->isEditMode = true;
+        $client = Clients::findOrFail($id);
+        $this->clientId = $id;
+        $this->clientname = $client->clientname;
+        $this->clientemail = $client->clientemail;
+        $this->clientphone = $client->clientphone;
+        $this->clientaddress = $client->clientaddress;
+        $this->clientcity = $client->clientcity;
+        $this->clientcountry = $client->clientcountry;
+    }
+
+    public function resetFormFields()
+    {
+        $this->clientId = null;
+        $this->clientname = '';
+        $this->clientemail = '';
+        $this->clientphone = '';
+        $this->clientaddress = '';
+        $this->clientcity = '';
+        $this->clientcountry = '';
+        $this->isEditMode = false;
+        $this->resetValidation();
     }
 }

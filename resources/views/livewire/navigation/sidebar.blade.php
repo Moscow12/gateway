@@ -41,6 +41,15 @@
                 <li><a href="{{ route('clients') }} " ><i class='bx bx-radio-circle'></i>Clients</a></li>
             </ul>
         </li>
+        <li><a class="has-arrow" href="#"><div class="parent-icon"><i class='bx bx-briefcase'></i>
+                </div>
+                <div class="menu-title">Services</div>
+              </a>
+            <ul>
+                <li><a href="{{ route('client-services') }}"><i class='bx bx-radio-circle'></i>Client Services</a></li>
+                <li><a href="{{ route('service-types') }}"><i class='bx bx-radio-circle'></i>Service Types</a></li>
+            </ul>
+        </li>
        
         <li>
             <a href="javascript:;" class="has-arrow">

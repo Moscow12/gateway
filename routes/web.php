@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\TemplateController;
-use App\Livewire\Admin\{Addusers, Applicantdetails, Client, Clientinvoices, Clientpage, Dashboard, Fpempregistered, Jobs, Location, Products, Smscategory, Userprofile, Users, Viewclient};
+use App\Livewire\Admin\{Addusers, Applicantdetails, Client, ClientServices, Clientinvoices, Clientpage, Dashboard, Fpempregistered, Jobs, Location, Products, ServiceTypes, Smscategory, Userprofile, Users, Viewclient};
 use App\Livewire\Admin\Website\Addteam;
 use App\Livewire\Admin\Website\Team;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('userprofile', Userprofile::class)->name('userprofile');
 
     Route::get('listproducts', Products::class)->name('listproducts');
+    Route::get('service-types', ServiceTypes::class)->name('service-types');
+    Route::get('client-services', ClientServices::class)->name('client-services');
 
     Route::view('admin/userlists', 'admin.userlists')->name('userlists');
     

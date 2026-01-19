@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Clients;
+use App\Models\ClientService;
 use App\Models\invoiceitems;
 use App\Models\invoices;
 use Illuminate\Support\Facades\Auth;
@@ -11,15 +13,21 @@ use Livewire\Component;
 class Clientpage extends Component
 {
     public $invoices = [], $selectedInvoices = [], $selectAll = false, $invoice_s, $invoiceId, $clientId;
-    public $search = '', $categories;  
-    public $isEditMode = false; 
+    public $search = '', $categories;
+    public $isEditMode = false;
     public $control_number, $TotalAmount, $Status, $statusAmount;
+    public $client, $clientServices;
 
 
     public function mount($id)
     {
         $this->clientId = $id;
+        $this->client = Clients::findOrFail($id);
         $this->invoices = invoices::where('client_id', $id)->get();
+        $this->clientServices = ClientService::with('serviceType')
+            ->where('client_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
         $this->statusAmount = Invoices::where('client_id', $id)
                                 ->join('invoiceitems as it', 'invoices.id', '=', 'it.invoice_id')
                                 ->select('invoices.status', DB::raw('SUM(it.amount) as total'), DB::raw('COUNT(it.id) as count'))

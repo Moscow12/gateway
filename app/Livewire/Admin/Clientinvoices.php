@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\{Producties, invoiceitems, Clients, invoices};
+use App\Models\{Producties, invoiceitems, Clients, invoices, ServiceType};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -10,8 +10,13 @@ use Livewire\Component;
 
 class Clientinvoices extends Component
 {
-    Public $clientId, $invoiceId, $invoice_items, $control_number, $TotalAmount, $Status, $client, $products, $invoice ;
-    public $product_id, $quantity, $amount, $isEditMode = false, $description, $invoicetotal;
+    public $clientId, $invoiceId, $invoice_items, $control_number, $TotalAmount, $Status, $client, $invoice;
+    public $serviceTypes, $products;
+    public $service_type_id, $product_id, $quantity, $amount, $description;
+    public $isEditMode = false, $editItemId;
+    public $invoicetotal;
+    public $itemType = 'service'; // 'service' or 'product'
+
     public function mount($clientId, $invoiceId)
     {
         $this->clientId = $clientId;
@@ -19,7 +24,8 @@ class Clientinvoices extends Component
         $this->client = Clients::findOrFail($clientId);
         $this->loadinvoiceitems($invoiceId);
         $this->loadinvoice($invoiceId);
-        $this->products = Producties::all();
+        $this->serviceTypes = ServiceType::orderBy('name')->get();
+        $this->products = Producties::orderBy('productname')->get();
     }
 
     public function render()
@@ -28,52 +34,103 @@ class Clientinvoices extends Component
     }
 
     public function loadinvoiceitems($invoiceId)
-    {        
-        $this->invoice_items = invoiceitems::where('invoice_id', $invoiceId)->get();
+    {
+        $this->invoice_items = invoiceitems::with(['serviceType', 'product'])
+            ->where('invoice_id', $invoiceId)
+            ->get();
     }
 
     public function loadinvoice($invoiceId)
     {
         $this->invoice = invoices::findOrFail($invoiceId);
+        $this->control_number = $this->invoice->control_number;
+    }
+
+    public function updatedServiceTypeId($value)
+    {
+        if ($value) {
+            $serviceType = ServiceType::find($value);
+            if ($serviceType) {
+                $this->amount = $serviceType->base_price;
+                $this->quantity = 1;
+            }
+        }
     }
 
     public function addItem()
     {
-        $this->validate([
-            'product_id' => 'required|string|max:255',
-            'quantity' => 'required|string|max:255',
-            'amount' => 'required|string|max:255',
-        ]);
+        $rules = [
+            'quantity' => 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:0',
+        ];
 
-        if ($this->isEditMode) {
-            $invoiceitem = invoiceitems::findOrFail($this->invoiceId);
-            $invoiceitem->update([
-                'product_id' => $this->product_id,
-                'amount' => $this->amount,
-                'quantity' => $this->quantity,
-                'description' => $this->description,
-            ]);
-            session()->flash('message', 'Invoice updated successfully.');
-            $this->reset(['product_id', 'amount', 'Status', 'description', 'isEditMode']);
-            $this->loadinvoiceitems($this->invoiceId);
-        }else{
-            invoiceitems::create([
-                'product_id' => $this->product_id,
-                'invoice_id' => $this->invoiceId,
-                'amount' => $this->amount,
-                'quantity' => $this->quantity,
-                'description' => $this->description,
-                'added_by' => Auth::user()->id
-            ]);
-            session()->flash('message', 'Invoice added successfully.');        
-            $this->reset(['product_id', 'amount', 'Status', 'description', 'isEditMode']);
-            $this->loadinvoiceitems($this->invoiceId);
+        if ($this->itemType === 'service') {
+            $rules['service_type_id'] = 'required|exists:service_types,id';
+        } else {
+            $rules['product_id'] = 'required|exists:products,id';
+        }
+
+        $this->validate($rules);
+
+        $data = [
+            'invoice_id' => $this->invoiceId,
+            'amount' => $this->amount,
+            'quantity' => $this->quantity,
+            'description' => $this->description,
+            'added_by' => Auth::user()->id,
+        ];
+
+        if ($this->itemType === 'service') {
+            $data['service_type_id'] = $this->service_type_id;
+            $data['product_id'] = null;
+        } else {
+            $data['product_id'] = $this->product_id;
+            $data['service_type_id'] = null;
+        }
+
+        if ($this->isEditMode && $this->editItemId) {
+            $invoiceitem = invoiceitems::findOrFail($this->editItemId);
+            $invoiceitem->update($data);
+            session()->flash('message', 'Item updated successfully.');
+        } else {
+            invoiceitems::create($data);
+            session()->flash('message', 'Item added successfully.');
+        }
+
+        $this->resetItemForm();
+        $this->loadinvoiceitems($this->invoiceId);
+    }
+
+    public function editItem($id)
+    {
+        $item = invoiceitems::findOrFail($id);
+        $this->isEditMode = true;
+        $this->editItemId = $id;
+        $this->quantity = $item->quantity;
+        $this->amount = $item->amount;
+        $this->description = $item->description;
+
+        if ($item->service_type_id) {
+            $this->itemType = 'service';
+            $this->service_type_id = $item->service_type_id;
+            $this->product_id = null;
+        } else {
+            $this->itemType = 'product';
+            $this->product_id = $item->product_id;
+            $this->service_type_id = null;
         }
     }
 
-    public function listinvoices()
+    public function resetItemForm()
     {
-        $this->invoice_items = invoiceitems::where('invoice_id', $this->invoiceId)->get();
+        $this->service_type_id = '';
+        $this->product_id = '';
+        $this->quantity = '';
+        $this->amount = '';
+        $this->description = '';
+        $this->isEditMode = false;
+        $this->editItemId = null;
+        $this->resetValidation();
     }
 
     public function delete($id)
@@ -81,34 +138,66 @@ class Clientinvoices extends Component
         $item = invoiceitems::find($id);
         if ($item) {
             $item->delete();
+            session()->flash('message', 'Item deleted successfully.');
         }
         $this->loadinvoiceitems($this->invoiceId);
     }
 
+    public function updateControlNumber()
+    {
+        $this->validate([
+            'control_number' => 'required|string|max:50',
+        ]);
+
+        $this->invoice = invoices::findOrFail($this->invoiceId);
+        $this->invoice->control_number = $this->control_number;
+        $this->invoice->save();
+
+        session()->flash('message', 'Control number updated successfully.');
+    }
+
+    public function generateControlNumber()
+    {
+        $this->control_number = rand(80000000, 999900000) . $this->clientId . Date::now()->format('y');
+    }
+
     public function generateinvoice()
     {
-        // calculate total amount
+        // Validate control number
+        $this->validate([
+            'control_number' => 'required|string|max:50',
+        ]);
+
+        // Calculate total amount
         $this->invoicetotal = invoiceitems::where('invoice_id', $this->invoiceId)
-                            ->select(DB::raw('SUM(amount * quantity) as total'))
-                            ->get();
-        
+            ->select(DB::raw('SUM(amount * quantity) as total'))
+            ->first();
+
         $this->invoice = invoices::findOrFail($this->invoiceId);
-        $this->invoice->control_number = rand(80000000, 999900000).$this->clientId.Date::now()->format('y');
-        $this->invoice->TotalAmount = $this->invoicetotal[0]->total;
+        $this->invoice->control_number = $this->control_number;
+        $this->invoice->TotalAmount = $this->invoicetotal->total ?? 0;
         $this->invoice->ControlNumberExpiretime = now()->addDays(30);
         $this->invoice->controlno_generatedtime = now();
         $this->invoice->Status = 'Active';
-        $this->invoice->update();
-        // update invoice
+        $this->invoice->save();
 
-        $this->invoice_items = invoices::findOrFail($this->invoiceId)->invoiceitems;
-        foreach ($this->invoice_items as $item) {
-            $item->update([
-                'TotalAmount' => $item->amount * $item->quantity,
-                'Status' => 'Active',
-            ]);
-        }
+        // Update invoice items status
+        invoiceitems::where('invoice_id', $this->invoiceId)->update([
+            'Status' => 'Active',
+        ]);
+
         session()->flash('message', 'Invoice generated successfully.');
         $this->loadinvoiceitems($this->invoiceId);
+        $this->loadinvoice($this->invoiceId);
+    }
+
+    public function markAsPaid()
+    {
+        $this->invoice = invoices::findOrFail($this->invoiceId);
+        $this->invoice->Status = 'Paid';
+        $this->invoice->save();
+
+        session()->flash('message', 'Invoice marked as paid.');
+        $this->loadinvoice($this->invoiceId);
     }
 }
