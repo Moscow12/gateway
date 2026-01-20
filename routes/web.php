@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\WebsiteController;
-use App\Livewire\Admin\{Addusers, Applicantdetails, Client, ClientServices, Clientinvoices, Clientpage, Companydetails, Dashboard, Fpempregistered, Jobs, Location, Permissions, Products, Roles, ServiceTypes, Smscategory, Userprofile, Users, Viewclient};
+use App\Livewire\Admin\{Addusers, Applicantdetails, Client, ClientServices, Clientinvoices, Clientpage, Companydetails, ContactRequests, Dashboard, Fpempregistered, Jobs, Location, Permissions, Products, Roles, ServiceTypes, Smscategory, Userprofile, Users, Viewclient};
 use App\Livewire\Admin\{HeroSectionManager, AboutContentManager, GalleryManager, TestimonialManager, PartnerManager, ServiceManager};
 use App\Livewire\Admin\Website\Addteam;
 use App\Livewire\Admin\Website\Team;
@@ -71,6 +71,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('testimonials', TestimonialManager::class)->name('testimonials');
     Route::get('partners', PartnerManager::class)->name('partners');
     Route::get('website-services', ServiceManager::class)->name('website-services');
+
+    // CRM Routes
+    Route::get('contact-requests', ContactRequests::class)->name('contact-requests');
 
     Route::view('admin/userlists', 'admin.userlists')->name('userlists');
     

@@ -9,7 +9,10 @@ use App\Models\Testimonial;
 use App\Models\Partner;
 use App\Models\Service;
 use App\Models\Teams;
+use App\Models\ContactRequest;
+use App\Mail\ContactRequestMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class WebsiteController extends Controller
 {
@@ -97,13 +100,20 @@ class WebsiteController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Here you can:
-        // 1. Save to database
-        // 2. Send email notification
-        // 3. Send to a CRM
+        // Save to database
+        $contactRequest = ContactRequest::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'company' => $validated['company'] ?? null,
+            'subject' => $validated['subject'],
+            'message' => $validated['message'],
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
-        // For now, we'll just redirect with success message
-        // You can implement email sending or database storage as needed
+        // Send email notification
+        Mail::to('meshackstev@gmail.com')->send(new ContactRequestMail($contactRequest));
 
         return redirect()->back()->with('success', 'Thank you for your message! We will get back to you within 24 hours.');
     }

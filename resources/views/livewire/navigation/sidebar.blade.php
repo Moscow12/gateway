@@ -50,6 +50,13 @@
                 <li><a href="{{ route('service-types') }}"><i class='bx bx-radio-circle'></i>Service Types</a></li>
             </ul>
         </li>
+        <li>
+            <a href="{{ route('contact-requests') }}">
+                <div class="parent-icon"><i class='bx bx-envelope'></i>
+                </div>
+                <div class="menu-title">Contact Requests</div>
+            </a>
+        </li>
        
         <li>
             <a href="javascript:;" class="has-arrow">
