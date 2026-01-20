@@ -352,6 +352,192 @@
                     </div>
                 </div>
 
+                <!-- Social Media Links -->
+                <div class="card radius-10 mb-4">
+                    <div class="card-header bg-transparent">
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bx bx-share-alt text-info fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Social Media Links</h6>
+                                <small class="text-muted">Connect your social media accounts</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Facebook -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-facebook-circle me-1" style="color: #1877F2;"></i> Facebook
+                                </label>
+                                <input type="url"
+                                       wire:model="facebook"
+                                       class="form-control @error('facebook') is-invalid @enderror"
+                                       placeholder="https://facebook.com/yourpage"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('facebook')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Twitter -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-twitter me-1" style="color: #1DA1F2;"></i> Twitter / X
+                                </label>
+                                <input type="url"
+                                       wire:model="twitter"
+                                       class="form-control @error('twitter') is-invalid @enderror"
+                                       placeholder="https://twitter.com/yourhandle"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('twitter')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Instagram -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-instagram me-1" style="color: #E4405F;"></i> Instagram
+                                </label>
+                                <input type="url"
+                                       wire:model="instagram"
+                                       class="form-control @error('instagram') is-invalid @enderror"
+                                       placeholder="https://instagram.com/yourprofile"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('instagram')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- LinkedIn -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-linkedin-square me-1" style="color: #0A66C2;"></i> LinkedIn
+                                </label>
+                                <input type="url"
+                                       wire:model="linkedin"
+                                       class="form-control @error('linkedin') is-invalid @enderror"
+                                       placeholder="https://linkedin.com/company/yourcompany"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('linkedin')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- YouTube -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-youtube me-1" style="color: #FF0000;"></i> YouTube
+                                </label>
+                                <input type="url"
+                                       wire:model="youtube"
+                                       class="form-control @error('youtube') is-invalid @enderror"
+                                       placeholder="https://youtube.com/@yourchannel"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('youtube')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- TikTok -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-tiktok me-1" style="color: #000000;"></i> TikTok
+                                </label>
+                                <input type="url"
+                                       wire:model="tiktok"
+                                       class="form-control @error('tiktok') is-invalid @enderror"
+                                       placeholder="https://tiktok.com/@yourprofile"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('tiktok')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- GitHub -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bxl-github me-1" style="color: #333333;"></i> GitHub
+                                </label>
+                                <input type="url"
+                                       wire:model="github"
+                                       class="form-control @error('github') is-invalid @enderror"
+                                       placeholder="https://github.com/yourorg"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('github')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Working Hours -->
+                <div class="card radius-10 mb-4">
+                    <div class="card-header bg-transparent">
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon bg-danger bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bx bx-time text-danger fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Working Hours</h6>
+                                <small class="text-muted">Set your business operating hours</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Weekdays -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bx-calendar me-1 text-primary"></i> Monday - Friday
+                                </label>
+                                <input type="text"
+                                       wire:model="working_hours_weekdays"
+                                       class="form-control @error('working_hours_weekdays') is-invalid @enderror"
+                                       placeholder="e.g. 8:00 AM - 6:00 PM"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('working_hours_weekdays')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Saturday -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bx-calendar-event me-1 text-warning"></i> Saturday
+                                </label>
+                                <input type="text"
+                                       wire:model="working_hours_saturday"
+                                       class="form-control @error('working_hours_saturday') is-invalid @enderror"
+                                       placeholder="e.g. 9:00 AM - 1:00 PM"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('working_hours_saturday')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Sunday -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="bx bx-calendar-x me-1 text-danger"></i> Sunday
+                                </label>
+                                <input type="text"
+                                       wire:model="working_hours_sunday"
+                                       class="form-control @error('working_hours_sunday') is-invalid @enderror"
+                                       placeholder="e.g. Closed"
+                                       {{ $hasExistingData && !$isEditMode ? 'disabled' : '' }}>
+                                @error('working_hours_sunday')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Action Buttons -->
                 @if(!$hasExistingData || $isEditMode)
                 <div class="card radius-10">

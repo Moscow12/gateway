@@ -32,6 +32,20 @@ class Companydetails extends Component
     public $logo;
     public $existing_logo;
 
+    // Social Media Links
+    public $facebook;
+    public $twitter;
+    public $instagram;
+    public $linkedin;
+    public $youtube;
+    public $tiktok;
+    public $github;
+
+    // Working Hours
+    public $working_hours_weekdays;
+    public $working_hours_saturday;
+    public $working_hours_sunday;
+
     public function mount()
     {
         $this->loadCompanyDetails();
@@ -58,6 +72,20 @@ class Companydetails extends Component
             $this->bank_address = $company->bank_address;
             $this->website = $company->website;
             $this->existing_logo = $company->logo;
+
+            // Social Media Links
+            $this->facebook = $company->facebook;
+            $this->twitter = $company->twitter;
+            $this->instagram = $company->instagram;
+            $this->linkedin = $company->linkedin;
+            $this->youtube = $company->youtube;
+            $this->tiktok = $company->tiktok;
+            $this->github = $company->github;
+
+            // Working Hours
+            $this->working_hours_weekdays = $company->working_hours_weekdays;
+            $this->working_hours_saturday = $company->working_hours_saturday;
+            $this->working_hours_sunday = $company->working_hours_sunday;
         }
     }
 
@@ -90,6 +118,18 @@ class Companydetails extends Component
             'bank_address' => 'nullable|string|max:500',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|image|max:2048',
+            // Social Media Links (nullable URLs)
+            'facebook' => 'nullable|url|max:255',
+            'twitter' => 'nullable|url|max:255',
+            'instagram' => 'nullable|url|max:255',
+            'linkedin' => 'nullable|url|max:255',
+            'youtube' => 'nullable|url|max:255',
+            'tiktok' => 'nullable|url|max:255',
+            'github' => 'nullable|url|max:255',
+            // Working Hours (nullable strings)
+            'working_hours_weekdays' => 'nullable|string|max:100',
+            'working_hours_saturday' => 'nullable|string|max:100',
+            'working_hours_sunday' => 'nullable|string|max:100',
         ]);
 
         $data = [
@@ -106,6 +146,18 @@ class Companydetails extends Component
             'bank_account' => $this->bank_account,
             'bank_address' => $this->bank_address,
             'website' => $this->website,
+            // Social Media Links
+            'facebook' => $this->facebook,
+            'twitter' => $this->twitter,
+            'instagram' => $this->instagram,
+            'linkedin' => $this->linkedin,
+            'youtube' => $this->youtube,
+            'tiktok' => $this->tiktok,
+            'github' => $this->github,
+            // Working Hours
+            'working_hours_weekdays' => $this->working_hours_weekdays,
+            'working_hours_saturday' => $this->working_hours_saturday,
+            'working_hours_sunday' => $this->working_hours_sunday,
             'user_id' => Auth::id(),
         ];
 

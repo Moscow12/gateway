@@ -99,33 +99,90 @@
                             <i class="bx bx-map"></i>
                             <div>
                                 <h5>Our Office</h5>
-                                <p>Plot 123, Innovation Drive<br>Dar es Salaam, Tanzania</p>
+                                <p>{{ $companyDetails->address ?? 'Dar es Salaam, Tanzania' }}</p>
                             </div>
                         </div>
                         <div class="contact-info-item">
                             <i class="bx bx-phone"></i>
                             <div>
                                 <h5>Phone</h5>
-                                <p>+255 123 456 789<br>+255 987 654 321</p>
+                                <p>{{ $companyDetails->phone ?? '+255 123 456 789' }}@if($companyDetails && $companyDetails->fax)<br>Fax: {{ $companyDetails->fax }}@endif</p>
                             </div>
                         </div>
                         <div class="contact-info-item">
                             <i class="bx bx-envelope"></i>
                             <div>
                                 <h5>Email</h5>
-                                <p>info@techsolutions.co.tz<br>support@techsolutions.co.tz</p>
+                                <p>{{ $companyDetails->email ?? 'info@example.com' }}</p>
                             </div>
                         </div>
+                        
                         <div class="contact-info-item mb-0">
                             <i class="bx bx-time"></i>
                             <div>
                                 <h5>Working Hours</h5>
-                                <p>Monday - Friday: 8:00 AM - 6:00 PM<br>Saturday: 9:00 AM - 1:00 PM</p>
+                                <p>
+                                    @if($companyDetails && ($companyDetails->working_hours_weekdays || $companyDetails->working_hours_saturday || $companyDetails->working_hours_sunday))
+                                        @if($companyDetails->working_hours_weekdays)
+                                            Monday - Friday: {{ $companyDetails->working_hours_weekdays }}<br>
+                                        @endif
+                                        @if($companyDetails->working_hours_saturday)
+                                            Saturday: {{ $companyDetails->working_hours_saturday }}<br>
+                                        @endif
+                                        @if($companyDetails->working_hours_sunday)
+                                            Sunday: {{ $companyDetails->working_hours_sunday }}
+                                        @endif
+                                    @else
+                                        Monday - Friday: 8:00 AM - 6:00 PM<br>Saturday: 9:00 AM - 1:00 PM
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Social Links -->
+                    @if($companyDetails && ($companyDetails->facebook || $companyDetails->twitter || $companyDetails->linkedin || $companyDetails->instagram || $companyDetails->youtube || $companyDetails->tiktok || $companyDetails->github))
+                    <div class="bg-white rounded-4 p-4 shadow-sm">
+                        <h5 class="mb-3">Follow Us</h5>
+                        <div class="d-flex gap-2 flex-wrap">
+                            @if($companyDetails->facebook)
+                            <a href="{{ $companyDetails->facebook }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-facebook fs-5"></i>
+                            </a>
+                            @endif
+                            @if($companyDetails->twitter)
+                            <a href="{{ $companyDetails->twitter }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-twitter fs-5"></i>
+                            </a>
+                            @endif
+                            @if($companyDetails->linkedin)
+                            <a href="{{ $companyDetails->linkedin }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-linkedin fs-5"></i>
+                            </a>
+                            @endif
+                            @if($companyDetails->instagram)
+                            <a href="{{ $companyDetails->instagram }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-instagram fs-5"></i>
+                            </a>
+                            @endif
+                            @if($companyDetails->youtube)
+                            <a href="{{ $companyDetails->youtube }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-youtube fs-5"></i>
+                            </a>
+                            @endif
+                            @if($companyDetails->tiktok)
+                            <a href="{{ $companyDetails->tiktok }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-tiktok fs-5"></i>
+                            </a>
+                            @endif
+                            @if($companyDetails->github)
+                            <a href="{{ $companyDetails->github }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bx bxl-github fs-5"></i>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                    @else
                     <div class="bg-white rounded-4 p-4 shadow-sm">
                         <h5 class="mb-3">Follow Us</h5>
                         <div class="d-flex gap-2">
@@ -146,6 +203,7 @@
                             </a>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

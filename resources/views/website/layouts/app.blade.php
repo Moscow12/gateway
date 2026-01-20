@@ -859,16 +859,44 @@
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-brand">
-                        <span class="text-gradient">Tech</span>Solutions
+                        @if($companyDetails && $companyDetails->company_name)
+                            {{ $companyDetails->company_name }}
+                        @else
+                            <span class="text-gradient">Tech</span>Solutions
+                        @endif
                     </div>
                     <p class="footer-text">
                         We transform ideas into powerful software solutions. Our team of experts is dedicated to delivering innovative technology that drives your business forward.
                     </p>
                     <div class="footer-social">
-                        <a href="#"><i class="bx bxl-facebook"></i></a>
-                        <a href="#"><i class="bx bxl-twitter"></i></a>
-                        <a href="#"><i class="bx bxl-linkedin"></i></a>
-                        <a href="#"><i class="bx bxl-github"></i></a>
+                        @if($companyDetails)
+                            @if($companyDetails->facebook)
+                                <a href="{{ $companyDetails->facebook }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-facebook"></i></a>
+                            @endif
+                            @if($companyDetails->twitter)
+                                <a href="{{ $companyDetails->twitter }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-twitter"></i></a>
+                            @endif
+                            @if($companyDetails->linkedin)
+                                <a href="{{ $companyDetails->linkedin }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-linkedin"></i></a>
+                            @endif
+                            @if($companyDetails->instagram)
+                                <a href="{{ $companyDetails->instagram }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-instagram"></i></a>
+                            @endif
+                            @if($companyDetails->youtube)
+                                <a href="{{ $companyDetails->youtube }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-youtube"></i></a>
+                            @endif
+                            @if($companyDetails->tiktok)
+                                <a href="{{ $companyDetails->tiktok }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-tiktok"></i></a>
+                            @endif
+                            @if($companyDetails->github)
+                                <a href="{{ $companyDetails->github }}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i></a>
+                            @endif
+                        @else
+                            <a href="#"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-twitter"></i></a>
+                            <a href="#"><i class="bx bxl-linkedin"></i></a>
+                            <a href="#"><i class="bx bxl-github"></i></a>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -894,14 +922,26 @@
                 <div class="col-lg-3 col-md-6">
                     <h5 class="footer-title">Contact Info</h5>
                     <ul class="footer-links">
-                        <li><i class="bx bx-map me-2"></i> Dar es Salaam, Tanzania</li>
-                        <li><i class="bx bx-phone me-2"></i> +255 123 456 789</li>
-                        <li><i class="bx bx-envelope me-2"></i> info@techsolutions.co.tz</li>
+                        @if($companyDetails)
+                            @if($companyDetails->address)
+                                <li><i class="bx bx-map me-2"></i> {{ $companyDetails->address }}</li>
+                            @endif
+                            @if($companyDetails->phone)
+                                <li><i class="bx bx-phone me-2"></i> {{ $companyDetails->phone }}</li>
+                            @endif
+                            @if($companyDetails->email)
+                                <li><i class="bx bx-envelope me-2"></i> {{ $companyDetails->email }}</li>
+                            @endif
+                        @else
+                            <li><i class="bx bx-map me-2"></i> Dar es Salaam, Tanzania</li>
+                            <li><i class="bx bx-phone me-2"></i> +255 123 456 789</li>
+                            <li><i class="bx bx-envelope me-2"></i> info@example.com</li>
+                        @endif
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} TechSolutions. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} {{ $companyDetails->company_name ?? 'TechSolutions' }}. All rights reserved.</p>
             </div>
         </div>
     </footer>

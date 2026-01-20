@@ -23,6 +23,16 @@ class companydetail extends Model
         'bank_address',
         'website',
         'logo',
+        'facebook',
+        'twitter',
+        'instagram',
+        'linkedin',
+        'youtube',
+        'tiktok',
+        'github',
+        'working_hours_weekdays',
+        'working_hours_saturday',
+        'working_hours_sunday',
         'user_id',
     ];
 

@@ -24,5 +24,12 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
             view()->share('teams', collect());
         }
+
+        // Share company details with all views (for website footer and contact page)
+        try {
+            view()->share('companyDetails', \App\Models\companydetail::first());
+        } catch (\Exception $e) {
+            view()->share('companyDetails', null);
+        }
     }
 }
