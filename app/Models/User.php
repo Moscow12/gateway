@@ -8,11 +8,12 @@ use App\Livewire\Admin\Smscategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -22,49 +23,16 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'role',
         'phone',
         'password',
         'photos',
+        'is_active',
     ];
 
-    /**
-     * Available user roles
-     */
-    public const ROLES = [
-        'admin' => 'Administrator',
-        'manager' => 'Manager',
-        'accountant' => 'Accountant',
-        'staff' => 'Staff',
-        'user' => 'User',
-    ];
-
-    /**
-     * Check if user has a specific role
-     */
-    public function hasRole(string $role): bool
-    {
-        return $this->role === $role;
-    }
-
-    /**
-     * Check if user is admin
-     */
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
-    }
-
-    /**
-     * Get role display name
-     */
-    public function getRoleNameAttribute(): string
-    {
-        return self::ROLES[$this->role] ?? ucfirst($this->role);
-    }
     protected $casts = [
         'photos' => 'array',
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -88,9 +56,24 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Check if user is a super admin
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super-admin');
+    }
+
+    /**
+     * Check if user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(['super-admin', 'admin']);
+    }
+
     public function SmsCategories()
     {
         return $this->hasMany(Smscategory::class);
     }
 }
- 

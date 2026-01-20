@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Spatie\Permission\Models\Role;
 
 class Addusers extends Component
 {
@@ -13,7 +14,7 @@ class Addusers extends Component
 
     public $name = '';
     public $email = '';
-    public $role = 'user';
+    public $role = '';
     public $phone = '';
     public $password = '';
     public $password_confirmation = '';
@@ -24,7 +25,7 @@ class Addusers extends Component
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'role' => 'required|in:' . implode(',', array_keys(User::ROLES)),
+            'role' => 'required|exists:roles,name',
             'phone' => 'nullable|string|max:20',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required',
@@ -38,7 +39,7 @@ class Addusers extends Component
         'email.email' => 'Please enter a valid email address.',
         'email.unique' => 'This email is already registered.',
         'role.required' => 'Please select a role.',
-        'role.in' => 'Please select a valid role.',
+        'role.exists' => 'Please select a valid role.',
         'password.required' => 'Please enter a password.',
         'password.min' => 'Password must be at least 6 characters.',
         'password.confirmed' => 'Passwords do not match.',
@@ -46,6 +47,13 @@ class Addusers extends Component
         'photos.*.image' => 'Each file must be an image.',
         'photos.*.max' => 'Each image must be less than 2MB.',
     ];
+
+    public function mount()
+    {
+        // Set default role
+        $defaultRole = Role::where('name', 'user')->first();
+        $this->role = $defaultRole ? $defaultRole->name : '';
+    }
 
     public function updated($property)
     {
@@ -60,7 +68,8 @@ class Addusers extends Component
     public function resetForm()
     {
         $this->reset(['name', 'email', 'role', 'phone', 'password', 'password_confirmation', 'photos']);
-        $this->role = 'user';
+        $defaultRole = Role::where('name', 'user')->first();
+        $this->role = $defaultRole ? $defaultRole->name : '';
         $this->resetValidation();
     }
 
@@ -73,14 +82,16 @@ class Addusers extends Component
             $paths[] = $photo->store('photos', 'public');
         }
 
-        User::create([
+        $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
-            'role' => $this->role,
             'password' => Hash::make($this->password),
             'phone' => $this->phone,
             'photos' => $paths,
         ]);
+
+        // Assign role using Spatie
+        $user->assignRole($this->role);
 
         session()->flash('success', 'User created successfully!');
         return redirect()->route('users');
@@ -88,6 +99,10 @@ class Addusers extends Component
 
     public function render()
     {
-        return view('livewire.admin.addusers');
+        $roles = Role::orderBy('name')->get();
+
+        return view('livewire.admin.addusers', [
+            'roles' => $roles,
+        ]);
     }
 }

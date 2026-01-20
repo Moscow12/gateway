@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\WebsiteController;
-use App\Livewire\Admin\{Addusers, Applicantdetails, Client, ClientServices, Clientinvoices, Clientpage, Companydetails, Dashboard, Fpempregistered, Jobs, Location, Products, ServiceTypes, Smscategory, Userprofile, Users, Viewclient};
+use App\Livewire\Admin\{Addusers, Applicantdetails, Client, ClientServices, Clientinvoices, Clientpage, Companydetails, Dashboard, Fpempregistered, Jobs, Location, Permissions, Products, Roles, ServiceTypes, Smscategory, Userprofile, Users, Viewclient};
 use App\Livewire\Admin\{HeroSectionManager, AboutContentManager, GalleryManager, TestimonialManager, PartnerManager, ServiceManager};
 use App\Livewire\Admin\Website\Addteam;
 use App\Livewire\Admin\Website\Team;
@@ -42,8 +42,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('applicants', Jobs::class)->name('applicants');
     Route::get('applicantdetails/{id}', Applicantdetails::class)->name('applicantdetails');
     Route::get('location', Location::class)->name('location');
-    Route::get('addusers', Addusers::class)->name('addusers');
-    Route::get('users', Users::class)->name('users');
+    Route::get('addusers', Addusers::class)->name('addusers')->middleware('permission:create users');
+    Route::get('users', Users::class)->name('users')->middleware('permission:view users');
+    Route::get('roles', Roles::class)->name('roles')->middleware('permission:view roles');
+    Route::get('permissions', Permissions::class)->name('permissions')->middleware('permission:view permissions');
     Route::get('smscategory', Smscategory::class)->name('smscategory');
     Route::get('addcatgory', Smscategory::class)->name('addcategory');
     Route::get('clients', Client::class)->name('clients');

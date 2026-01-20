@@ -58,8 +58,6 @@
                 <div class="menu-title">Settings</div>
             </a>
             <ul>
-                <li> <a href="{{ route('location') }}" wire:navigate><i class='bx bx-radio-circle'></i>Address</a>
-                </li>
                 <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>Website Content</a>
                     <ul>
                         <li><a href="{{ route('hero-sections') }}"><i class='bx bx-radio-circle'></i>Hero Sections</a></li>
@@ -87,12 +85,18 @@
                 </li>
                 <li> <a href="#"><i class='bx bx-radio-circle'></i>Vacancy Registry</a>
                 </li>
-                <li> 
-                    <a href="{{ route('users') }}"  >
-                         <i class='bx bx-radio-circle'></i>Users</a>
-                    </a>
+                <li><a class="has-arrow" href="#"><i class='bx bx-radio-circle'></i>User Management</a>
+                    <ul>
+                        <li><a href="{{ route('users') }}"><i class='bx bx-radio-circle'></i>Users</a></li>
+                        @can('view roles')
+                        <li><a href="{{ route('roles') }}"><i class='bx bx-radio-circle'></i>Roles</a></li>
+                        @endcan
+                        @can('view permissions')
+                        <li><a href="{{ route('permissions') }}"><i class='bx bx-radio-circle'></i>Permissions</a></li>
+                        @endcan
+                    </ul>
                 </li>
-                <li> 
+                <li>
                     <a href="{{ route('companydetails') }}"  >
                          <i class='bx bx-radio-circle'></i>Company Details</a>
                     </a>

@@ -50,8 +50,8 @@
                     @if($name || $email || $phone)
                         <h4 class="mb-1">{{ $name ?: 'New User' }}</h4>
                         @if($role)
-                            <span class="badge bg-{{ $role === 'admin' ? 'danger' : ($role === 'manager' ? 'warning' : ($role === 'accountant' ? 'success' : 'primary')) }} mb-2">
-                                {{ \App\Models\User::ROLES[$role] ?? ucfirst($role) }}
+                            <span class="badge bg-{{ $role === 'super-admin' ? 'danger' : ($role === 'admin' ? 'warning' : ($role === 'manager' ? 'info' : 'primary')) }} mb-2">
+                                {{ ucfirst(str_replace('-', ' ', $role)) }}
                             </span>
                         @endif
                         @if($email)
@@ -146,8 +146,9 @@
                                 </label>
                                 <select wire:model.live="role"
                                         class="form-select @error('role') is-invalid @enderror">
-                                    @foreach(\App\Models\User::ROLES as $value => $label)
-                                        <option value="{{ $value }}">{{ $label }}</option>
+                                    <option value="">Select a role...</option>
+                                    @foreach($roles as $roleOption)
+                                        <option value="{{ $roleOption->name }}">{{ ucfirst(str_replace('-', ' ', $roleOption->name)) }}</option>
                                     @endforeach
                                 </select>
                                 @error('role')
