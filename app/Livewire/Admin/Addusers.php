@@ -9,15 +9,42 @@ use Livewire\WithFileUploads;
 
 class Addusers extends Component
 {
-        use WithFileUploads;
-    public $name ='', $email ='', $phone ='', $password ='', $password_confirmation ='', $photo ='';
+    use WithFileUploads;
+
+    public $name = '';
+    public $email = '';
+    public $role = 'user';
+    public $phone = '';
+    public $password = '';
+    public $password_confirmation = '';
     public $photos = [];
-    protected $rules = [
-        'password' => 'required|min:6|confirmed',
-        'name' => 'required',
-        'email' => 'required|email:unique:users',
-        'phone' => 'required',
-        'photo' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|in:' . implode(',', array_keys(User::ROLES)),
+            'phone' => 'nullable|string|max:20',
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required',
+            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+        ];
+    }
+
+    protected $messages = [
+        'name.required' => 'Please enter the user\'s name.',
+        'email.required' => 'Please enter an email address.',
+        'email.email' => 'Please enter a valid email address.',
+        'email.unique' => 'This email is already registered.',
+        'role.required' => 'Please select a role.',
+        'role.in' => 'Please select a valid role.',
+        'password.required' => 'Please enter a password.',
+        'password.min' => 'Password must be at least 6 characters.',
+        'password.confirmed' => 'Passwords do not match.',
+        'password_confirmation.required' => 'Please confirm the password.',
+        'photos.*.image' => 'Each file must be an image.',
+        'photos.*.max' => 'Each image must be less than 2MB.',
     ];
 
     public function updated($property)
@@ -25,40 +52,40 @@ class Addusers extends Component
         $this->validateOnly($property);
     }
 
+    public function removePhoto($index)
+    {
+        array_splice($this->photos, $index, 1);
+    }
+
+    public function resetForm()
+    {
+        $this->reset(['name', 'email', 'role', 'phone', 'password', 'password_confirmation', 'photos']);
+        $this->role = 'user';
+        $this->resetValidation();
+    }
+
     public function addUser()
-    {     
-        $this->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'phone' => 'nullable',
-            'photos.*' => 'image|max:2048',
-        ]);  
-       
+    {
+        $this->validate();
 
-         $paths = [];
-
+        $paths = [];
         foreach ($this->photos as $photo) {
             $paths[] = $photo->store('photos', 'public');
         }
 
-        // dd($this->all());
-        
-        
-        $user = User::create([
+        User::create([
             'name' => $this->name,
             'email' => $this->email,
+            'role' => $this->role,
             'password' => Hash::make($this->password),
             'phone' => $this->phone,
             'photos' => $paths,
         ]);
-        $user->save();
+
         session()->flash('success', 'User created successfully!');
         return redirect()->route('users');
-        
     }
-   
-   
+
     public function render()
     {
         return view('livewire.admin.addusers');

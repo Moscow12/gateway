@@ -22,10 +22,46 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
         'phone',
         'password',
         'photos',
     ];
+
+    /**
+     * Available user roles
+     */
+    public const ROLES = [
+        'admin' => 'Administrator',
+        'manager' => 'Manager',
+        'accountant' => 'Accountant',
+        'staff' => 'Staff',
+        'user' => 'User',
+    ];
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Get role display name
+     */
+    public function getRoleNameAttribute(): string
+    {
+        return self::ROLES[$this->role] ?? ucfirst($this->role);
+    }
     protected $casts = [
         'photos' => 'array',
     ];
