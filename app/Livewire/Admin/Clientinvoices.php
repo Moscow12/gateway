@@ -17,6 +17,8 @@ class Clientinvoices extends Component
     public $invoicetotal;
     public $itemType = 'service'; // 'service' or 'product'
     public $company; // Company details
+    public $include_vat = true;
+    public $vat_rate = 18;
 
     public function mount($clientId, $invoiceId)
     {
@@ -46,6 +48,8 @@ class Clientinvoices extends Component
     {
         $this->invoice = invoices::findOrFail($invoiceId);
         $this->control_number = $this->invoice->control_number;
+        $this->include_vat = $this->invoice->include_vat ?? true;
+        $this->vat_rate = $this->invoice->vat_rate ?? 18;
     }
 
     public function updatedServiceTypeId($value)
@@ -163,6 +167,16 @@ class Clientinvoices extends Component
         $this->control_number = rand(80000000, 999900000) . $this->clientId . Date::now()->format('y');
     }
 
+    public function updateVatSettings()
+    {
+        $this->invoice = invoices::findOrFail($this->invoiceId);
+        $this->invoice->include_vat = $this->include_vat;
+        $this->invoice->vat_rate = $this->vat_rate;
+        $this->invoice->save();
+
+        session()->flash('message', 'VAT settings updated successfully.');
+    }
+
     public function generateinvoice()
     {
         // Validate control number
@@ -170,14 +184,26 @@ class Clientinvoices extends Component
             'control_number' => 'required|string|max:50',
         ]);
 
-        // Calculate total amount
+        // Calculate subtotal
         $this->invoicetotal = invoiceitems::where('invoice_id', $this->invoiceId)
             ->select(DB::raw('SUM(amount * quantity) as total'))
             ->first();
 
+        $subtotal = $this->invoicetotal->total ?? 0;
+
+        // Calculate total with or without VAT
+        if ($this->include_vat) {
+            $vatAmount = $subtotal * ($this->vat_rate / 100);
+            $totalAmount = $subtotal + $vatAmount;
+        } else {
+            $totalAmount = $subtotal;
+        }
+
         $this->invoice = invoices::findOrFail($this->invoiceId);
         $this->invoice->control_number = $this->control_number;
-        $this->invoice->TotalAmount = $this->invoicetotal->total ?? 0;
+        $this->invoice->TotalAmount = $totalAmount;
+        $this->invoice->include_vat = $this->include_vat;
+        $this->invoice->vat_rate = $this->vat_rate;
         $this->invoice->ControlNumberExpiretime = now()->addDays(30);
         $this->invoice->controlno_generatedtime = now();
         $this->invoice->Status = 'Active';

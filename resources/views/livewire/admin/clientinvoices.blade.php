@@ -5,7 +5,8 @@
         foreach($invoice_items ?? [] as $item) {
             $subtotal += $item->quantity * $item->amount;
         }
-        $tax = $subtotal * 0.18;
+        $vatRate = $vat_rate ?? 18;
+        $tax = $include_vat ? ($subtotal * ($vatRate / 100)) : 0;
         $totalAmount = $subtotal + $tax;
     @endphp
 
@@ -106,6 +107,29 @@
                         @enderror
                         <div class="form-text">Enter manually or click refresh to auto-generate</div>
                     </div>
+
+                    <!-- VAT Settings -->
+                    @if($invoice?->Status === 'Pending')
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bx bx-receipt me-1 text-info"></i> VAT Settings
+                        </label>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="includeVat" wire:model.live="include_vat">
+                            <label class="form-check-label" for="includeVat">
+                                {{ $include_vat ? 'VAT Included' : 'VAT Excluded' }}
+                            </label>
+                        </div>
+                        @if($include_vat)
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">VAT Rate</span>
+                            <input type="number" wire:model.live="vat_rate" class="form-control" min="0" max="100" step="0.01">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        @endif
+                    </div>
+                    <hr>
+                    @endif
 
                     @if($invoice?->Status === 'Pending' && count($invoice_items ?? []) > 0)
                         <button wire:click="generateinvoice" class="btn btn-primary radius-30 w-100 mb-2">
@@ -415,13 +439,23 @@
                                         <td class="no-print"></td>
                                     @endif
                                 </tr>
+                                @if($include_vat)
                                 <tr>
-                                    <td colspan="4" class="text-end fw-semibold">VAT (18%):</td>
+                                    <td colspan="4" class="text-end fw-semibold">VAT ({{ number_format($vatRate, 0) }}%):</td>
                                     <td class="text-end fw-semibold">{{ number_format($tax, 0) }} TZS</td>
                                     @if($invoice?->Status === 'Pending')
                                         <td class="no-print"></td>
                                     @endif
                                 </tr>
+                                @else
+                                <tr>
+                                    <td colspan="4" class="text-end fw-semibold text-muted">VAT:</td>
+                                    <td class="text-end fw-semibold text-muted">Excluded</td>
+                                    @if($invoice?->Status === 'Pending')
+                                        <td class="no-print"></td>
+                                    @endif
+                                </tr>
+                                @endif
                                 <tr class="table-primary">
                                     <td colspan="4" class="text-end fw-bold fs-5">Grand Total:</td>
                                     <td class="text-end fw-bold fs-5 text-primary">{{ number_format($totalAmount, 0) }} TZS</td>

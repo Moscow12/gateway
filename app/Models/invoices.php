@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class invoices extends Model
 {
     protected $table = 'invoices';
-    protected $fillable = ['control_number', 'TotalAmount', 'Status', 'client_id', 'added_by', 'ControlNumberExpiretime', 'controlno_generatedtime'];
+    protected $fillable = ['control_number', 'TotalAmount', 'include_vat', 'vat_rate', 'Status', 'client_id', 'added_by', 'ControlNumberExpiretime', 'controlno_generatedtime'];
 
     protected $casts = [
         'ControlNumberExpiretime' => 'datetime',
         'controlno_generatedtime' => 'datetime',
+        'include_vat' => 'boolean',
+        'vat_rate' => 'decimal:2',
     ];
 
     public function client()
