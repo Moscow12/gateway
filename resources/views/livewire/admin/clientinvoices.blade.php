@@ -379,20 +379,20 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
-                                            <div class="d-flex align-items-center">
+                                            <div class="d-flex align-items-start">
                                                 @if($item->service_type_id)
-                                                    <div class="item-icon bg-info bg-opacity-10 rounded-circle p-2 me-2">
+                                                    <div class="item-icon bg-info bg-opacity-10 rounded-circle p-2 me-2 flex-shrink-0">
                                                         <i class="bx {{ $item->serviceType->icon ?? 'bx-briefcase' }} text-info"></i>
                                                     </div>
                                                 @else
-                                                    <div class="item-icon bg-warning bg-opacity-10 rounded-circle p-2 me-2">
+                                                    <div class="item-icon bg-warning bg-opacity-10 rounded-circle p-2 me-2 flex-shrink-0">
                                                         <i class="bx bx-package text-warning"></i>
                                                     </div>
                                                 @endif
-                                                <div class="flex-grow-1" style="min-width: 0;">
+                                                <div class="flex-grow-1">
                                                     <h6 class="mb-0">{{ $item->item_name }}</h6>
                                                     @if($item->description)
-                                                        <small class="text-muted d-block text-truncate" style="max-width: 100%;" title="{{ $item->description }}">{{ $item->description }}</small>
+                                                        <small class="text-muted d-block" style="word-wrap: break-word; white-space: normal;">{{ $item->description }}</small>
                                                     @endif
                                                 </div>
                                             </div>
@@ -683,11 +683,10 @@
                 display: none !important;
             }
 
-            /* Truncate long descriptions in print */
-            .text-truncate {
-                white-space: nowrap !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
+            /* Wrap long descriptions in print */
+            .text-muted {
+                word-wrap: break-word !important;
+                white-space: normal !important;
             }
 
             /* Hide action buttons column */
