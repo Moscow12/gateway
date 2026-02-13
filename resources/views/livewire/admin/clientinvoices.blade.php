@@ -389,10 +389,10 @@
                                                         <i class="bx bx-package text-warning"></i>
                                                     </div>
                                                 @endif
-                                                <div>
+                                                <div class="flex-grow-1" style="min-width: 0;">
                                                     <h6 class="mb-0">{{ $item->item_name }}</h6>
                                                     @if($item->description)
-                                                        <small class="text-muted">{{ $item->description }}</small>
+                                                        <small class="text-muted d-block text-truncate" style="max-width: 100%;" title="{{ $item->description }}">{{ $item->description }}</small>
                                                     @endif
                                                 </div>
                                             </div>
@@ -681,6 +681,13 @@
             /* Item icon - hide for cleaner print */
             .item-icon {
                 display: none !important;
+            }
+
+            /* Truncate long descriptions in print */
+            .text-truncate {
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
             }
 
             /* Hide action buttons column */
