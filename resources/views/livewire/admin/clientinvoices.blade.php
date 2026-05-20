@@ -59,19 +59,19 @@
                         @switch($invoice?->Status)
                             @case('Paid')
                                 <div class="status-icon bg-success bg-opacity-10 rounded-circle mx-auto mb-3">
-                                    <i class="bx bx-check-circle text-success fs-1"></i>
+                                    <i class="bx bx-check-circle fs-1"></i>
                                 </div>
                                 <span class="badge bg-success px-4 py-2 fs-6">PAID</span>
                                 @break
                             @case('Active')
                                 <div class="status-icon bg-warning bg-opacity-10 rounded-circle mx-auto mb-3">
-                                    <i class="bx bx-time-five text-warning fs-1"></i>
+                                    <i class="bx bx-time-five  fs-1"></i>
                                 </div>
                                 <span class="badge bg-warning text-dark px-4 py-2 fs-6">ACTIVE</span>
                                 @break
                             @case('Expired')
                                 <div class="status-icon bg-danger bg-opacity-10 rounded-circle mx-auto mb-3">
-                                    <i class="bx bx-x-circle text-danger fs-1"></i>
+                                    <i class="bx bx-x-circle  fs-1"></i>
                                 </div>
                                 <span class="badge bg-danger px-4 py-2 fs-6">EXPIRED</span>
                                 @break
@@ -79,7 +79,7 @@
                                 <div class="status-icon bg-info bg-opacity-10 rounded-circle mx-auto mb-3">
                                     <i class="bx bx-loader-circle text-info fs-1"></i>
                                 </div>
-                                <span class="badge bg-info px-4 py-2 fs-6">PENDING</span>
+                                <span class="badge  px-4 py-2 fs-6">PENDING</span>
                         @endswitch
                     </div>
 
@@ -136,9 +136,28 @@
                             <i class="bx bx-check"></i> Finalize Invoice
                         </button>
                     @elseif($invoice?->Status === 'Active')
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="paymentDate">
+                                <i class="bx bx-calendar-check me-1 text-success"></i> Payment Date
+                            </label>
+                            <input type="date"
+                                   id="paymentDate"
+                                   wire:model="payment_date"
+                                   max="{{ now()->format('Y-m-d') }}"
+                                   class="form-control @error('payment_date') is-invalid @enderror">
+                            @error('payment_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">Record the date the payment was received.</div>
+                        </div>
                         <button wire:click="markAsPaid" class="btn btn-success radius-30 w-100">
                             <i class="bx bx-check-circle"></i> Mark as Paid
                         </button>
+                    @elseif($invoice?->Status === 'Paid' && $invoice?->paid_at)
+                        <div class="text-center text-muted small">
+                            <i class="bx bx-calendar-check me-1"></i>
+                            Paid on <strong>{{ $invoice->paid_at->format('d M Y') }}</strong>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -356,6 +375,12 @@
                                         <span class="badge bg-info">Pending</span>
                                 @endswitch
                             </div>
+                            @if($invoice?->Status === 'Paid' && $invoice?->paid_at)
+                                <div class="mt-2">
+                                    <span class="text-muted">Payment Date:</span>
+                                    <strong>{{ $invoice->paid_at->format('d M Y') }}</strong>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -382,11 +407,11 @@
                                             <div class="d-flex align-items-start">
                                                 @if($item->service_type_id)
                                                     <div class="item-icon bg-info bg-opacity-10 rounded-circle p-2 me-2 flex-shrink-0">
-                                                        <i class="bx {{ $item->serviceType->icon ?? 'bx-briefcase' }} text-info"></i>
+                                                        <i class="bx {{ $item->serviceType->icon ?? 'bx-briefcase' }}"></i>
                                                     </div>
                                                 @else
                                                     <div class="item-icon bg-warning bg-opacity-10 rounded-circle p-2 me-2 flex-shrink-0">
-                                                        <i class="bx bx-package text-warning"></i>
+                                                        <i class="bx bx-package "></i>
                                                     </div>
                                                 @endif
                                                 <div class="flex-grow-1">

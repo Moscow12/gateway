@@ -19,6 +19,7 @@ class Clientinvoices extends Component
     public $company; // Company details
     public $include_vat = true;
     public $vat_rate = 18;
+    public $payment_date;
 
     public function mount($clientId, $invoiceId)
     {
@@ -50,6 +51,7 @@ class Clientinvoices extends Component
         $this->control_number = $this->invoice->control_number;
         $this->include_vat = $this->invoice->include_vat ?? true;
         $this->vat_rate = $this->invoice->vat_rate ?? 18;
+        $this->payment_date = optional($this->invoice->paid_at)->format('Y-m-d') ?? now()->format('Y-m-d');
     }
 
     public function updatedServiceTypeId($value)
@@ -221,11 +223,19 @@ class Clientinvoices extends Component
 
     public function markAsPaid()
     {
+        $this->validate([
+            'payment_date' => 'required|date|before_or_equal:today',
+        ], [
+            'payment_date.required' => 'Please select the date the payment was made.',
+            'payment_date.before_or_equal' => 'The payment date cannot be in the future.',
+        ]);
+
         $this->invoice = invoices::findOrFail($this->invoiceId);
         $this->invoice->Status = 'Paid';
+        $this->invoice->paid_at = $this->payment_date;
         $this->invoice->save();
 
-        session()->flash('message', 'Invoice marked as paid.');
+        session()->flash('message', 'Invoice marked as paid on ' . $this->invoice->paid_at->format('d M Y') . '.');
         $this->loadinvoice($this->invoiceId);
     }
 }

@@ -89,7 +89,7 @@
         <div class="col-6 col-md-4 col-lg-2">
             <div class="card radius-10 h-100">
                 <div class="card-body text-center py-4">
-                    <div class="widget-icon mx-auto mb-3 bg-primary bg-opacity-10 text-primary rounded-circle">
+                    <div class="widget-icon mx-auto mb-3 bg-primary bg-opacity-10 rounded-circle">
                         <i class="bx bx-layer fs-4"></i>
                     </div>
                     <h3 class="mb-1">{{ $totalServices }}</h3>
@@ -100,7 +100,7 @@
         <div class="col-6 col-md-4 col-lg-2">
             <div class="card radius-10 h-100">
                 <div class="card-body text-center py-4">
-                    <div class="widget-icon mx-auto mb-3 bg-success bg-opacity-10 text-success rounded-circle">
+                    <div class="widget-icon mx-auto mb-3 bg-success bg-opacity-10 rounded-circle">
                         <i class="bx bx-check-circle fs-4"></i>
                     </div>
                     <h3 class="mb-1 text-success">{{ $activeServices }}</h3>
@@ -111,7 +111,7 @@
         <div class="col-6 col-md-4 col-lg-2">
             <div class="card radius-10 h-100">
                 <div class="card-body text-center py-4">
-                    <div class="widget-icon mx-auto mb-3 bg-warning bg-opacity-10 text-warning rounded-circle">
+                    <div class="widget-icon mx-auto mb-3 bg-warning bg-opacity-10 rounded-circle">
                         <i class="bx bx-time-five fs-4"></i>
                     </div>
                     <h3 class="mb-1 text-warning">{{ $pendingServices }}</h3>
@@ -122,7 +122,7 @@
         <div class="col-6 col-md-4 col-lg-2">
             <div class="card radius-10 h-100">
                 <div class="card-body text-center py-4">
-                    <div class="widget-icon mx-auto mb-3 bg-danger bg-opacity-10 text-danger rounded-circle">
+                    <div class="widget-icon mx-auto mb-3 bg-danger bg-opacity-10 rounded-circle">
                         <i class="bx bx-x-circle fs-4"></i>
                     </div>
                     <h3 class="mb-1 text-danger">{{ $expiredServices }}</h3>
@@ -190,7 +190,7 @@
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle me-2">
+                                                <div class="avatar avatar-sm bg-primary bg-opacity-10  rounded-circle me-2">
                                                     {{ strtoupper(substr($invoice->client->clientname ?? 'N', 0, 1)) }}
                                                 </div>
                                                 <div>
