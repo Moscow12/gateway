@@ -35,7 +35,7 @@
 
     <!-- Flash Message -->
     @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show border-0 bg-success bg-opacity-10" role="alert">
+        <div class="alert alert-success alert-dismissible fade show border-0 bg-opacity-10" role="alert">
             <div class="d-flex align-items-center">
                 <div class="fs-3 text-success"><i class="bx bx-check-circle"></i></div>
                 <div class="ms-3">

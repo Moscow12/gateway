@@ -31,11 +31,11 @@
 
     <!-- Flash Messages -->
     @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show border-0 bg-success bg-opacity-10" role="alert">
+        <div class="alert alert-success alert-dismissible fade show border-0 bg-opacity-10" role="alert">
             <div class="d-flex align-items-center">
-                <div class="fs-3 text-success"><i class="bx bx-check-circle"></i></div>
+                <div class="fs-3"><i class="bx bx-check-circle"></i></div>
                 <div class="ms-3">
-                    <div class="text-success">{{ session('message') }}</div>
+                    <div class=">{{ session('message') }}</div>
                 </div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -54,7 +54,7 @@
                         </div>
                         <h4 class="mb-1">{{ $client->clientname ?? 'Unknown Client' }}</h4>
                         @if($client->clientcode)
-                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 mb-3">
+                            <span class="badge bg-info bg-opacity-10  px-3 py-2 mb-3">
                                 <i class="bx bx-hash"></i> {{ $client->clientcode }}
                             </span>
                         @endif
@@ -65,7 +65,7 @@
                     <div class="client-details">
                         <div class="d-flex align-items-center mb-3">
                             <div class="detail-icon bg-primary bg-opacity-10 rounded-circle p-2 me-3">
-                                <i class="bx bx-envelope text-primary"></i>
+                                <i class="bx bx-envelope"></i>
                             </div>
                             <div>
                                 <small class="text-muted d-block">Email</small>
@@ -75,7 +75,7 @@
 
                         <div class="d-flex align-items-center mb-3">
                             <div class="detail-icon bg-success bg-opacity-10 rounded-circle p-2 me-3">
-                                <i class="bx bx-phone text-success"></i>
+                                <i class="bx bx-phone"></i>
                             </div>
                             <div>
                                 <small class="text-muted d-block">Phone</small>
@@ -85,7 +85,7 @@
 
                         <div class="d-flex align-items-center mb-3">
                             <div class="detail-icon bg-warning bg-opacity-10 rounded-circle p-2 me-3">
-                                <i class="bx bx-map text-warning"></i>
+                                <i class="bx bx-map "></i>
                             </div>
                             <div>
                                 <small class="text-muted d-block">Address</small>
@@ -95,7 +95,7 @@
 
                         <div class="d-flex align-items-center mb-3">
                             <div class="detail-icon bg-info bg-opacity-10 rounded-circle p-2 me-3">
-                                <i class="bx bx-buildings text-info"></i>
+                                <i class="bx bx-buildings "></i>
                             </div>
                             <div>
                                 <small class="text-muted d-block">City</small>
@@ -154,7 +154,7 @@
                             <span>Paid</span>
                         </div>
                         <div class="text-end">
-                            <span class="badge bg-success bg-opacity-10 text-success">{{ $Paid->count ?? 0 }}</span>
+                            <span class="badge bg-success bg-opacity-10">{{ $Paid->count ?? 0 }}</span>
                             <span class="ms-2 fw-semibold">{{ number_format($Paid->total ?? 0, 0) }}</span>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                             <span>Active</span>
                         </div>
                         <div class="text-end">
-                            <span class="badge bg-warning bg-opacity-10 text-warning">{{ $Active->count ?? 0 }}</span>
+                            <span class="badge bg-warning bg-opacity-10 ">{{ $Active->count ?? 0 }}</span>
                             <span class="ms-2 fw-semibold">{{ number_format($Active->total ?? 0, 0) }}</span>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                             <span>Pending</span>
                         </div>
                         <div class="text-end">
-                            <span class="badge bg-info bg-opacity-10 text-info">{{ $pending->count ?? 0 }}</span>
+                            <span class="badge bg-info bg-opacity-10 ">{{ $pending->count ?? 0 }}</span>
                             <span class="ms-2 fw-semibold">{{ number_format($pending->total ?? 0, 0) }}</span>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                             <span>Expired</span>
                         </div>
                         <div class="text-end">
-                            <span class="badge bg-danger bg-opacity-10 text-danger">{{ $Expired->count ?? 0 }}</span>
+                            <span class="badge bg-danger bg-opacity-10 ">{{ $Expired->count ?? 0 }}</span>
                             <span class="ms-2 fw-semibold">{{ number_format($Expired->total ?? 0, 0) }}</span>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                                     <p class="mb-0 text-secondary small">Total Invoices</p>
                                     <h4 class="my-1 text-primary">{{ count($invoices) }}</h4>
                                 </div>
-                                <div class="widgets-icons-2 rounded-circle bg-primary bg-opacity-10 text-primary ms-auto">
+                                <div class="widgets-icons-2 rounded-circle bg-opacity-10 text-primary ms-auto">
                                     <i class="bx bx-receipt"></i>
                                 </div>
                             </div>
@@ -227,9 +227,9 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-secondary small">Paid</p>
-                                    <h4 class="my-1 text-success">{{ $Paid->count ?? 0 }}</h4>
+                                    <h4 class="my-1">{{ $Paid->count ?? 0 }}</h4>
                                 </div>
-                                <div class="widgets-icons-2 rounded-circle bg-success bg-opacity-10 text-success ms-auto">
+                                <div class="widgets-icons-2 rounded-circle bg-opacity-10 ms-auto">
                                     <i class="bx bx-check-circle"></i>
                                 </div>
                             </div>
@@ -242,9 +242,9 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-secondary small">Pending</p>
-                                    <h4 class="my-1 text-warning">{{ $pending->count ?? 0 }}</h4>
+                                    <h4 class="my-1 ">{{ $pending->count ?? 0 }}</h4>
                                 </div>
-                                <div class="widgets-icons-2 rounded-circle bg-warning bg-opacity-10 text-warning ms-auto">
+                                <div class="widgets-icons-2 rounded-circle  bg-opacity-10  ms-auto">
                                     <i class="bx bx-time-five"></i>
                                 </div>
                             </div>
@@ -257,9 +257,9 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-secondary small">Services</p>
-                                    <h4 class="my-1 text-info">{{ count($clientServices ?? []) }}</h4>
+                                    <h4 class="my-1 ">{{ count($clientServices ?? []) }}</h4>
                                 </div>
-                                <div class="widgets-icons-2 rounded-circle bg-info bg-opacity-10 text-info ms-auto">
+                                <div class="widgets-icons-2 rounded-circle bg-opacity-10  ms-auto">
                                     <i class="bx bx-briefcase"></i>
                                 </div>
                             </div>
@@ -294,9 +294,9 @@
                                                 </span>
                                                 @if($service->days_left !== null)
                                                     @if($service->days_left <= 30 && $service->days_left > 0)
-                                                        <small class="text-warning">{{ $service->days_left }} days left</small>
+                                                        <small class="">{{ $service->days_left }} days left</small>
                                                     @elseif($service->days_left === 0)
-                                                        <small class="text-danger">Expired</small>
+                                                        <small class="">Expired</small>
                                                     @endif
                                                 @endif
                                             </div>
@@ -348,13 +348,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="{{ $invoice->created_at->addDays(30)->isPast() ? 'text-danger' : '' }}">
+                                            <span class="{{ $invoice->created_at->addDays(30)->isPast() ? '' : '' }}">
                                                 {{ $invoice->created_at->addDays(30)->format('d M Y') }}
                                             </span>
                                         </td>
                                         <td>
                                             @if($invoice->control_number)
-                                                <span class="badge bg-secondary bg-opacity-10 text-secondary px-2 py-1">
+                                                <span class="badge bg-secondary bg-opacity-10 px-2 py-1">
                                                     {{ $invoice->control_number }}
                                                 </span>
                                             @else
@@ -375,27 +375,27 @@
                                         <td>
                                             @switch($invoice->Status)
                                                 @case('Paid')
-                                                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                                                    <span class="badge bg-opacity-10 px-3 py-2">
                                                         <i class="bx bx-check-circle me-1"></i>Paid
                                                     </span>
                                                     @break
                                                 @case('Active')
-                                                    <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2">
+                                                    <span class="badge  bg-opacity-10  px-3 py-2">
                                                         <i class="bx bx-loader-circle me-1"></i>Active
                                                     </span>
                                                     @break
                                                 @case('Pending')
-                                                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
+                                                    <span class="badge  bg-opacity-10  px-3 py-2">
                                                         <i class="bx bx-time-five me-1"></i>Pending
                                                     </span>
                                                     @break
                                                 @case('Expired')
-                                                    <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2">
+                                                    <span class="badge  bg-opacity-10  px-3 py-2">
                                                         <i class="bx bx-x-circle me-1"></i>Expired
                                                     </span>
                                                     @break
                                                 @default
-                                                    <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2">
+                                                    <span class="badge  bg-opacity-10 bg-secondary px-3 py-2">
                                                         {{ $invoice->Status ?? 'Unknown' }}
                                                     </span>
                                             @endswitch
