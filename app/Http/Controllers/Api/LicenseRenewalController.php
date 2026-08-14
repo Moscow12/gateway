@@ -78,7 +78,13 @@ class LicenseRenewalController extends Controller
 
         $invoice = null;
         try {
-            $invoice = ClientServiceSubscription::createRenewalInvoice($client, $validated['duration_months']);
+            $result = ClientServiceSubscription::createRenewalInvoice($client, $validated['duration_months']);
+            if ($result) {
+                $invoice = $result['invoice'];
+                $renewalRequest->invoice_id = $invoice->id;
+                $renewalRequest->client_service_id = $result['client_service']->id;
+                $renewalRequest->save();
+            }
         } catch (\Throwable $e) {
             Log::error('Failed to generate renewal invoice: ' . $e->getMessage());
         }

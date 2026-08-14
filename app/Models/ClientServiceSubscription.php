@@ -32,8 +32,10 @@ class ClientServiceSubscription extends Model
      * Returns null (and logs a warning) if the client has no active recurring
      * service or no subscription configured for it — invoice generation is a
      * side effect, not a hard requirement for the renewal request to succeed.
+     *
+     * @return array{invoice: invoices, client_service: ClientService}|null
      */
-    public static function createRenewalInvoice(Clients $client, int $durationMonths): ?invoices
+    public static function createRenewalInvoice(Clients $client, int $durationMonths): ?array
     {
         $clientService = ClientService::where('client_id', $client->id)
             ->where('status', ClientService::STATUS_ACTIVE)
@@ -63,6 +65,6 @@ class ClientServiceSubscription extends Model
             'added_by' => $client->added_by,
         ]);
 
-        return $invoice;
+        return ['invoice' => $invoice, 'client_service' => $clientService];
     }
 }

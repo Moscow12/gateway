@@ -162,6 +162,59 @@
                 </div>
             </div>
 
+            <!-- Process License Card -->
+            <div class="card radius-10 mb-4">
+                <div class="card-header bg-transparent">
+                    <h6 class="mb-0"><i class="bx bx-badge-check me-2"></i>Process License</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2 small text-muted">
+                        License value: <strong>{{ number_format($invoice->TotalAmount ?? 0, 0) }} TZS</strong>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Renewal Request</label>
+                        <select wire:model="selectedRenewalRequestId"
+                                class="form-select @error('selectedRenewalRequestId') is-invalid @enderror">
+                            <option value="">Select renewal request...</option>
+                            @foreach($pendingRenewalRequests ?? [] as $req)
+                                <option value="{{ $req->id }}">
+                                    #{{ $req->id }} - {{ $req->duration_months }} month(s) ({{ ucfirst($req->status) }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('selectedRenewalRequestId')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        @if(count($pendingRenewalRequests ?? []) === 0)
+                            <div class="form-text">No pending renewal requests for this client.</div>
+                        @endif
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Service / License</label>
+                        <select wire:model="selectedClientServiceId"
+                                class="form-select @error('selectedClientServiceId') is-invalid @enderror">
+                            <option value="">Select service...</option>
+                            @foreach($clientServicesForProcessing ?? [] as $cs)
+                                <option value="{{ $cs->id }}">
+                                    {{ $cs->serviceType->name ?? 'Unknown Service' }} ({{ ucfirst(str_replace('_', ' ', $cs->status)) }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('selectedClientServiceId')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button wire:click="processLicense"
+                            wire:confirm="Approve this renewal request and mark the service license as processed?"
+                            class="btn btn-primary radius-30 w-100">
+                        <i class="bx bx-check-double"></i> Process License
+                    </button>
+                </div>
+            </div>
+
             <!-- Add Item Card -->
             @if($invoice?->Status === 'Pending')
             <div class="card radius-10">

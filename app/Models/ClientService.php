@@ -15,6 +15,7 @@ class ClientService extends Model
     const STATUS_LICENSE_EXPIRED = 'license_expired';
     const STATUS_PENDING = 'pending';
     const STATUS_SUSPENDED = 'suspended';
+    const STATUS_PROCESSED = 'processed';
 
     public static $statuses = [
         self::STATUS_ACTIVE => 'Active',
@@ -22,6 +23,7 @@ class ClientService extends Model
         self::STATUS_LICENSE_EXPIRED => 'License Expired',
         self::STATUS_PENDING => 'Pending',
         self::STATUS_SUSPENDED => 'Suspended',
+        self::STATUS_PROCESSED => 'Processed',
     ];
 
     protected $fillable = [
@@ -133,6 +135,7 @@ class ClientService extends Model
             self::STATUS_LICENSE_EXPIRED => 'bg-danger bg-opacity-10 text-danger',
             self::STATUS_PENDING => 'bg-warning bg-opacity-10 text-warning',
             self::STATUS_SUSPENDED => 'bg-dark bg-opacity-10 text-dark',
+            self::STATUS_PROCESSED => 'bg-info bg-opacity-10 text-info',
             default => 'bg-secondary bg-opacity-10 text-secondary',
         };
     }
@@ -145,6 +148,7 @@ class ClientService extends Model
             self::STATUS_LICENSE_EXPIRED => 'bx-x-circle',
             self::STATUS_PENDING => 'bx-time-five',
             self::STATUS_SUSPENDED => 'bx-block',
+            self::STATUS_PROCESSED => 'bx-check-double',
             default => 'bx-help-circle',
         };
     }

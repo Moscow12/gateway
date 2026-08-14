@@ -122,12 +122,12 @@ class Clientpage extends Component
             return;
         }
 
-        $invoice = ClientServiceSubscription::createRenewalInvoice(
+        $result = ClientServiceSubscription::createRenewalInvoice(
             $this->client,
             $clientService->subscription->billing_interval_months
         );
 
-        if ($invoice) {
+        if ($result) {
             session()->flash('message', 'Invoice generated successfully.');
             $this->invoices = invoices::where('client_id', $this->clientId)->get();
         } else {
@@ -168,6 +168,9 @@ class Clientpage extends Component
         $invoice = Invoices::find($id);
 
         if ($invoice) {
+            // Delete invoice items first — invoiceitems.invoice_id is ON DELETE RESTRICT
+            invoiceitems::where('invoice_id', $invoice->id)->delete();
+
             // Delete invoice
             $invoice->delete();
 

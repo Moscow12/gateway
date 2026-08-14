@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\{Producties, invoiceitems, Clients, invoices, ServiceType, companydetail};
+use App\Models\{Producties, invoiceitems, Clients, invoices, ServiceType, companydetail, ClientService, LicenseRenewalRequest};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +21,11 @@ class Clientinvoices extends Component
     public $vat_rate = 18;
     public $payment_date;
 
+    public $pendingRenewalRequests;
+    public $selectedRenewalRequestId;
+    public $clientServicesForProcessing;
+    public $selectedClientServiceId;
+
     public function mount($clientId, $invoiceId)
     {
         $this->clientId = $clientId;
@@ -31,6 +36,51 @@ class Clientinvoices extends Component
         $this->loadinvoice($invoiceId);
         $this->serviceTypes = ServiceType::orderBy('name')->get();
         $this->products = Producties::orderBy('productname')->get();
+        $this->loadProcessingOptions();
+    }
+
+    public function loadProcessingOptions()
+    {
+        $this->pendingRenewalRequests = LicenseRenewalRequest::where('client_id', $this->clientId)
+            ->whereIn('status', [LicenseRenewalRequest::STATUS_PENDING, LicenseRenewalRequest::STATUS_ACKNOWLEDGED])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $this->clientServicesForProcessing = ClientService::with('serviceType')
+            ->where('client_id', $this->clientId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function processLicense()
+    {
+        $this->validate([
+            'selectedRenewalRequestId' => 'required|exists:license_renewal_requests,id',
+            'selectedClientServiceId' => 'required|exists:client_services,id',
+        ], [
+            'selectedRenewalRequestId.required' => 'Please select a renewal request to approve.',
+            'selectedClientServiceId.required' => 'Please select which service license to mark as processed.',
+        ]);
+
+        $renewalRequest = LicenseRenewalRequest::findOrFail($this->selectedRenewalRequestId);
+        $renewalRequest->status = LicenseRenewalRequest::STATUS_APPROVED;
+        $renewalRequest->save();
+
+        // Record "processed" on the renewal request's own history via status,
+        // but the service itself returns to "active" so it stays eligible for
+        // the next renewal cycle's invoice generation — "processed" is not a
+        // resting state for client_services.
+        $clientService = ClientService::findOrFail($this->selectedClientServiceId);
+        $clientService->status = ClientService::STATUS_ACTIVE;
+        $clientService->license_end_date = $renewalRequest->end_date;
+        $clientService->next_renewal_date = $renewalRequest->end_date;
+        $clientService->save();
+
+        session()->flash('message', 'License processed: renewal request approved and service is active until ' . $renewalRequest->end_date->format('d M Y') . '.');
+
+        $this->selectedRenewalRequestId = null;
+        $this->selectedClientServiceId = null;
+        $this->loadProcessingOptions();
     }
 
     public function render()

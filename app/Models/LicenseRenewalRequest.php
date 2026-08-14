@@ -13,6 +13,7 @@ class LicenseRenewalRequest extends Model
     const STATUS_ACKNOWLEDGED = 'acknowledged';
     const STATUS_COMPLETED = 'completed';
     const STATUS_REJECTED = 'rejected';
+    const STATUS_APPROVED = 'approved';
 
     protected $fillable = [
         'client_id',
@@ -23,6 +24,8 @@ class LicenseRenewalRequest extends Model
         'commitment_comment',
         'status',
         'acknowledged_at',
+        'invoice_id',
+        'client_service_id',
     ];
 
     protected $casts = [
@@ -34,5 +37,15 @@ class LicenseRenewalRequest extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Clients::class, 'client_id');
+    }
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(invoices::class, 'invoice_id');
+    }
+
+    public function clientService(): BelongsTo
+    {
+        return $this->belongsTo(ClientService::class, 'client_service_id');
     }
 }
