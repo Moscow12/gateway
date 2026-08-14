@@ -60,6 +60,11 @@ class ClientService extends Model
         return $this->belongsTo(User::class, 'added_by');
     }
 
+    public function subscription()
+    {
+        return $this->hasOne(ClientServiceSubscription::class, 'client_service_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {

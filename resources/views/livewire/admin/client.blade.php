@@ -19,11 +19,23 @@
 
     <!-- Flash Message -->
     @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show border-0 bg-success bg-opacity-10" role="alert">
+        <div class="alert alert-success alert-dismissible fade show border-0 bg-opacity-10" role="alert">
             <div class="d-flex align-items-center">
                 <div class="fs-3 text-success"><i class="bx bx-check-circle"></i></div>
                 <div class="ms-3">
                     <div class="text-success">{{ session('message') }}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show border-0 bg-opacity-10" role="alert">
+            <div class="d-flex align-items-center">
+                <div class="fs-3 text-danger"><i class="bx bx-error-circle"></i></div>
+                <div class="ms-3">
+                    <div class="text-danger">{{ session('error') }}</div>
                 </div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -49,7 +61,7 @@
             </div>
         </div>
         <div class="col-6 col-lg">
-            <div class="card radius-10 border-start border-success border-4 cursor-pointer {{ $statusFilter === 'paid' ? 'shadow-sm bg-success bg-opacity-5' : '' }}"
+            <div class="card radius-10 border-start border-success border-4 cursor-pointer {{ $statusFilter === 'paid' ? 'shadow-sm  bg-opacity-5' : '' }}"
                  wire:click="$set('statusFilter', 'paid')">
                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
@@ -57,7 +69,7 @@
                             <p class="mb-0 text-secondary small">Paid</p>
                             <h4 class="my-1 text-success">{{ $paidClients }}</h4>
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-success bg-opacity-10 text-success ms-auto">
+                        <div class="widgets-icons-2 rounded-circle  bg-opacity-10 text-success ms-auto">
                             <i class="bx bx-check-circle"></i>
                         </div>
                     </div>
@@ -65,7 +77,7 @@
             </div>
         </div>
         <div class="col-6 col-lg">
-            <div class="card radius-10 border-start border-info border-4 cursor-pointer {{ $statusFilter === 'active' ? 'shadow-sm bg-info bg-opacity-5' : '' }}"
+            <div class="card radius-10 border-start border-info border-4 cursor-pointer {{ $statusFilter === 'active' ? 'shadow-sm  bg-opacity-5' : '' }}"
                  wire:click="$set('statusFilter', 'active')">
                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
@@ -73,7 +85,7 @@
                             <p class="mb-0 text-secondary small">Active Invoice</p>
                             <h4 class="my-1 text-info">{{ $activeClients }}</h4>
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-info bg-opacity-10 text-info ms-auto">
+                        <div class="widgets-icons-2 rounded-circle  bg-opacity-10 text-info ms-auto">
                             <i class="bx bx-time-five"></i>
                         </div>
                     </div>
@@ -81,7 +93,7 @@
             </div>
         </div>
         <div class="col-6 col-lg">
-            <div class="card radius-10 border-start border-danger border-4 cursor-pointer {{ $statusFilter === 'expired' ? 'shadow-sm bg-danger bg-opacity-5' : '' }}"
+            <div class="card radius-10 border-start border-danger border-4 cursor-pointer {{ $statusFilter === 'expired' ? 'shadow-sm  bg-opacity-5' : '' }}"
                  wire:click="$set('statusFilter', 'expired')">
                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
@@ -89,7 +101,7 @@
                             <p class="mb-0 text-secondary small">Expired</p>
                             <h4 class="my-1 text-danger">{{ $expiredClients }}</h4>
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-danger bg-opacity-10 text-danger ms-auto">
+                        <div class="widgets-icons-2 rounded-circle  bg-opacity-10 text-danger ms-auto">
                             <i class="bx bx-x-circle"></i>
                         </div>
                     </div>
@@ -97,7 +109,7 @@
             </div>
         </div>
         <div class="col-6 col-lg">
-            <div class="card radius-10 border-start border-warning border-4 cursor-pointer {{ $statusFilter === 'expiring_soon' ? 'shadow-sm bg-warning bg-opacity-5' : '' }}"
+            <div class="card radius-10 border-start border-warning border-4 cursor-pointer {{ $statusFilter === 'expiring_soon' ? 'shadow-sm  bg-opacity-5' : '' }}"
                  wire:click="$set('statusFilter', 'expiring_soon')">
                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
@@ -105,7 +117,7 @@
                             <p class="mb-0 text-secondary small">Expiring Soon</p>
                             <h4 class="my-1 text-warning">{{ $expiringSoonClients }}</h4>
                         </div>
-                        <div class="widgets-icons-2 rounded-circle bg-warning bg-opacity-10 text-warning ms-auto">
+                        <div class="widgets-icons-2 rounded-circle  bg-opacity-10 text-warning ms-auto">
                             <i class="bx bx-error"></i>
                         </div>
                     </div>
@@ -192,6 +204,7 @@
                             <th>Contact</th>
                             <th>Status</th>
                             <th>Code</th>
+                            <th>Secret Key</th>
                             <th style="width: 150px;" class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -216,7 +229,7 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="client-avatar bg-{{ $clientStatus['class'] }} bg-opacity-10 rounded-circle p-2 me-3">
-                                            <span class="text-{{ $clientStatus['class'] }} fw-bold">{{ strtoupper(substr($client->clientname, 0, 2)) }}</span>
+                                            <span class=" fw-bold">{{ strtoupper(substr($client->clientname, 0, 2)) }}</span>
                                         </div>
                                         <div>
                                             <h6 class="mb-0 fw-semibold">{{ $client->clientname }}</h6>
@@ -233,7 +246,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-{{ $clientStatus['class'] }} bg-opacity-10 text-{{ $clientStatus['class'] }} px-3 py-2">
+                                    <span class="badge  bg-opacity-10 text-{{ $clientStatus['class'] }} px-3 py-2">
                                         @switch($clientStatus['status'])
                                             @case('paid')
                                                 <i class="bx bx-check-circle me-1"></i>
@@ -277,6 +290,21 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
+                                <td>
+                                    @if($client->secretkey)
+                                        <div class="d-flex align-items-center gap-1" x-data="{ revealed: false }">
+                                            <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2" x-text="revealed ? '{{ $client->secretkey }}' : '••••••••••••'"></span>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary radius-30" title="Show/Hide" @click="revealed = !revealed">
+                                                <i class="bx" :class="revealed ? 'bx-hide' : 'bx-show'"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary radius-30" title="Copy" @click="navigator.clipboard.writeText('{{ $client->secretkey }}')">
+                                                <i class="bx bx-copy"></i>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('clientpage', $client->id) }}"
@@ -290,18 +318,20 @@
                                                 title="Edit">
                                             <i class="bx bx-edit"></i>
                                         </button>
-                                        <button wire:click="delete({{ $client->id }})"
-                                                wire:confirm="Are you sure you want to delete this client?"
-                                                class="btn btn-sm btn-outline-danger radius-30"
-                                                title="Delete">
-                                            <i class="bx bx-trash"></i>
-                                        </button>
+                                        @if(!$client->invoices()->exists())
+                                            <button wire:click="delete({{ $client->id }})"
+                                                    wire:confirm="Are you sure you want to delete this client?"
+                                                    class="btn btn-sm btn-outline-danger radius-30"
+                                                    title="Delete">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-5">
+                                <td colspan="8" class="text-center py-5">
                                     <div class="text-muted">
                                         <i class="bx bx-group fs-1 d-block mb-3"></i>
                                         @if($statusFilter !== 'all')

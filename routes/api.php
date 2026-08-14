@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\Api\Fpcontroller;
+use App\Http\Controllers\Api\LicenseRenewalController;
 
 Route::get('/fp', [Fpcontroller::class, 'index']);
 Route::post('/receive', [Fpcontroller::class, 'receive']);
+
+Route::post('/license-renewals', [LicenseRenewalController::class, 'store']);
 

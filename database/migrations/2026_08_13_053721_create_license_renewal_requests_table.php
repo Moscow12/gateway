@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('license_renewal_requests', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedInteger('duration_months');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('phone_number');
+            $table->text('commitment_comment')->nullable();
+            $table->enum('status', ['pending', 'acknowledged', 'completed', 'rejected'])->default('pending');
+            $table->timestamp('acknowledged_at')->nullable();
+
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('license_renewal_requests');
+    }
+};

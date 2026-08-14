@@ -4,27 +4,39 @@ namespace App\Livewire\Admin;
 
 use App\Models\Clients;
 use App\Models\ClientService;
+use App\Models\ClientServiceSubscription;
 use App\Models\invoiceitems;
 use App\Models\invoices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Clientpage extends Component
 {
+    use WithFileUploads;
+
     public $invoices = [], $selectedInvoices = [], $selectAll = false, $invoice_s, $invoiceId, $clientId;
     public $search = '', $categories;
     public $isEditMode = false;
     public $control_number, $TotalAmount, $Status, $statusAmount;
     public $client, $clientServices;
 
+    // Subscription form fields
+    public $subscriptionClientServiceId;
+    public $price;
+    public $billing_interval_months = 1;
+    public $contract_attachment;
+    public $existing_contract_attachment;
+    public $isSubscriptionEditMode = false;
 
     public function mount($id)
     {
         $this->clientId = $id;
         $this->client = Clients::findOrFail($id);
         $this->invoices = invoices::where('client_id', $id)->get();
-        $this->clientServices = ClientService::with('serviceType')
+        $this->clientServices = ClientService::with(['serviceType', 'subscription'])
             ->where('client_id', $id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -38,6 +50,89 @@ class Clientpage extends Component
     public function render()
     {
         return view('livewire.admin.clientpage');
+    }
+
+    public function editSubscription($clientServiceId)
+    {
+        $clientService = ClientService::with('subscription')->findOrFail($clientServiceId);
+        $this->subscriptionClientServiceId = $clientServiceId;
+
+        if ($clientService->subscription) {
+            $this->price = $clientService->subscription->price;
+            $this->billing_interval_months = $clientService->subscription->billing_interval_months;
+            $this->existing_contract_attachment = $clientService->subscription->contract_attachment;
+            $this->isSubscriptionEditMode = true;
+        } else {
+            $this->price = null;
+            $this->billing_interval_months = 1;
+            $this->existing_contract_attachment = null;
+            $this->isSubscriptionEditMode = false;
+        }
+
+        $this->contract_attachment = null;
+    }
+
+    public function saveSubscription()
+    {
+        $this->validate([
+            'price' => 'required|numeric|min:0',
+            'billing_interval_months' => 'required|integer|min:1',
+            'contract_attachment' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+        ]);
+
+        $data = [
+            'client_service_id' => $this->subscriptionClientServiceId,
+            'price' => $this->price,
+            'billing_interval_months' => $this->billing_interval_months,
+        ];
+
+        if ($this->contract_attachment) {
+            if ($this->existing_contract_attachment) {
+                Storage::disk('public')->delete($this->existing_contract_attachment);
+            }
+            $data['contract_attachment'] = $this->contract_attachment->store('contracts', 'public');
+        }
+
+        ClientServiceSubscription::updateOrCreate(
+            ['client_service_id' => $this->subscriptionClientServiceId],
+            $data
+        );
+
+        session()->flash('message', 'Subscription saved successfully.');
+        $this->resetSubscriptionForm();
+        $this->clientServices = ClientService::with(['serviceType', 'subscription'])
+            ->where('client_id', $this->clientId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $this->dispatch('close-subscription-modal');
+    }
+
+    public function resetSubscriptionForm()
+    {
+        $this->reset(['subscriptionClientServiceId', 'price', 'contract_attachment', 'existing_contract_attachment', 'isSubscriptionEditMode']);
+        $this->billing_interval_months = 1;
+    }
+
+    public function generateRenewalInvoice($clientServiceId)
+    {
+        $clientService = ClientService::with('subscription')->findOrFail($clientServiceId);
+
+        if (!$clientService->subscription) {
+            session()->flash('error', 'Cannot generate invoice: no subscription configured for this service.');
+            return;
+        }
+
+        $invoice = ClientServiceSubscription::createRenewalInvoice(
+            $this->client,
+            $clientService->subscription->billing_interval_months
+        );
+
+        if ($invoice) {
+            session()->flash('message', 'Invoice generated successfully.');
+            $this->invoices = invoices::where('client_id', $this->clientId)->get();
+        } else {
+            session()->flash('error', 'Failed to generate invoice.');
+        }
     }
     
     public function createinvoice()

@@ -138,6 +138,7 @@ class Client extends Component
                 'clientaddress' => $this->clientaddress,
                 'clientcity' => $this->clientcity,
                 'clientcode' => Str::upper($this->clientcode),
+                'secretkey' => Str::random(40),
                 'clientcountry' => $this->clientcountry,
                 'added_by' => Auth::user()->id
             ]);
@@ -244,6 +245,10 @@ class Client extends Component
     {
         $item = Clients::find($id);
         if ($item) {
+            if ($item->invoices()->exists()) {
+                session()->flash('error', 'Cannot delete a client that has invoices.');
+                return;
+            }
             $item->delete();
             $this->loadStatistics();
             $this->listclients();

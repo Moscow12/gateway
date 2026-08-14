@@ -19,7 +19,7 @@
 
     <!-- Flash Message -->
     @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show border-0 bg-success bg-opacity-10" role="alert">
+        <div class="alert alert-success alert-dismissible fade show border-0  bg-opacity-10" role="alert">
             <div class="d-flex align-items-center">
                 <div class="fs-3 text-success"><i class="bx bx-check-circle"></i></div>
                 <div class="ms-3">
@@ -135,7 +135,6 @@
                                     @endif
                                 </div>
                             </th>
-                            <th>Description</th>
                             <th>Duration</th>
                             <th>Type</th>
                             <th wire:click="sortBy('base_price')" class="cursor-pointer">
@@ -158,7 +157,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="service-icon bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                        <div class="service-icon  bg-opacity-10 rounded-circle p-2 me-3">
                                             <i class="bx {{ $type->icon ?? 'bx-cog' }} text-primary fs-5"></i>
                                         </div>
                                         <div>
@@ -168,13 +167,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="text-truncate d-inline-block" style="max-width: 200px;" title="{{ $type->description }}">
-                                        {{ Str::limit($type->description, 40) ?? '-' }}
-                                    </span>
-                                </td>
-                                <td>
                                     @if($type->default_duration_months)
-                                        <span class="badge bg-info bg-opacity-10 text-info">
+                                        <span class="badge  bg-opacity-10 text-info">
                                             {{ $type->default_duration_months }} {{ Str::plural('month', $type->default_duration_months) }}
                                         </span>
                                     @else
@@ -183,11 +177,11 @@
                                 </td>
                                 <td>
                                     @if($type->is_recurring)
-                                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                                        <span class="badge  bg-opacity-10 text-success px-3 py-2">
                                             <i class="bx bx-refresh me-1"></i> Recurring
                                         </span>
                                     @else
-                                        <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2">
+                                        <span class="badge  bg-opacity-10 text-warning px-3 py-2">
                                             <i class="bx bx-check me-1"></i> One-Time
                                         </span>
                                     @endif
@@ -198,7 +192,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-sm bg-light-primary text-primary rounded-circle me-2">
+                                        <div class="avatar avatar-sm text-primary rounded-circle me-2">
                                             {{ strtoupper(substr($type->user->name ?? 'U', 0, 1)) }}
                                         </div>
                                         <span>{{ $type->user->name ?? 'Unknown' }}</span>

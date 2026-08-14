@@ -42,6 +42,18 @@
         </div>
     @endif
 
+    @if (session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show border-0 bg-opacity-10" role="alert">
+            <div class="d-flex align-items-center">
+                <div class="fs-3 text-danger"><i class="bx bx-error-circle"></i></div>
+                <div class="ms-3">
+                    <div class="text-danger">{{ session('error') }}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row">
         <!-- Client Profile Card -->
         <div class="col-12 col-lg-4">
@@ -284,7 +296,7 @@
                                 <div class="service-card p-3 border radius-10 {{ $service->status === 'active' ? 'border-success' : ($service->status === 'pending' ? 'border-warning' : 'border-secondary') }}">
                                     <div class="d-flex align-items-center">
                                         <div class="service-icon bg-{{ $service->status === 'active' ? 'success' : ($service->status === 'pending' ? 'warning' : 'secondary') }} bg-opacity-10 rounded-circle p-2 me-3">
-                                            <i class="bx {{ $service->serviceType->icon ?? 'bx-cog' }} text-{{ $service->status === 'active' ? 'success' : ($service->status === 'pending' ? 'warning' : 'secondary') }}"></i>
+                                            <i class="bx {{ $service->serviceType->icon ?? 'bx-cog' }}"></i>
                                         </div>
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">{{ $service->serviceType->name ?? 'Unknown Service' }}</h6>
@@ -309,6 +321,104 @@
                 </div>
             </div>
             @endif
+
+            <!-- Subscription / Billing Card -->
+            @if(count($clientServices ?? []) > 0)
+            <div class="card radius-10 mb-4">
+                <div class="card-header bg-transparent d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0"><i class="bx bx-credit-card me-2"></i>Subscription / Billing</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        @foreach($clientServices->take(4) as $service)
+                            <div class="col-md-6">
+                                <div class="service-card p-3 border radius-10">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">{{ $service->serviceType->name ?? 'Unknown Service' }}</h6>
+                                            @if($service->subscription)
+                                                <div class="text-muted small mb-1">
+                                                    <i class="bx bx-money me-1"></i>{{ number_format($service->subscription->price, 2) }}
+                                                    every {{ $service->subscription->billing_interval_months }} month(s)
+                                                </div>
+                                                @if($service->subscription->contract_attachment)
+                                                    <a href="{{ asset('storage/' . $service->subscription->contract_attachment) }}" target="_blank" class="small">
+                                                        <i class="bx bx-file me-1"></i>View Contract
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted small"><i class="bx bx-file-blank me-1"></i>No contract attached</span>
+                                                @endif
+                                            @else
+                                                <span class="text-muted small">No subscription configured</span>
+                                            @endif
+                                        </div>
+                                        <div class="d-flex flex-column gap-1">
+                                            <button wire:click="editSubscription({{ $service->id }})"
+                                                    data-bs-toggle="modal" data-bs-target="#subscriptionModal"
+                                                    class="btn btn-sm btn-outline-primary radius-30" title="Edit Subscription">
+                                                <i class="bx bx-edit"></i>
+                                            </button>
+                                            @if($service->subscription)
+                                                <button wire:click="generateRenewalInvoice({{ $service->id }})"
+                                                        wire:confirm="Generate a renewal invoice for this service?"
+                                                        class="btn btn-sm btn-outline-success radius-30" title="Generate Invoice">
+                                                    <i class="bx bx-receipt"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Subscription Modal -->
+            <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-hidden="true" wire:ignore.self>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom-0 bg-primary bg-opacity-10">
+                            <h5 class="modal-title mb-0">{{ $isSubscriptionEditMode ? 'Edit Subscription' : 'Add Subscription' }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form wire:submit.prevent="saveSubscription">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Price</label>
+                                    <input type="number" step="0.01" wire:model="price"
+                                           class="form-control @error('price') is-invalid @enderror">
+                                    @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Billing Interval (months)</label>
+                                    <input type="number" min="1" wire:model="billing_interval_months"
+                                           class="form-control @error('billing_interval_months') is-invalid @enderror">
+                                    @error('billing_interval_months')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Contract Attachment</label>
+                                    <input type="file" wire:model="contract_attachment"
+                                           class="form-control @error('contract_attachment') is-invalid @enderror">
+                                    @error('contract_attachment')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    <div class="form-text">PDF or Word document, max 5MB.</div>
+                                    @if($existing_contract_attachment && !$contract_attachment)
+                                        <div class="mt-2 small">
+                                            <i class="bx bx-file me-1"></i>Current:
+                                            <a href="{{ asset('storage/' . $existing_contract_attachment) }}" target="_blank">View existing contract</a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top-0 bg-light">
+                                <button type="button" class="btn btn-secondary radius-30 px-4" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary radius-30 px-4">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <!-- Invoices Table Card -->
             <div class="card radius-10">
@@ -375,27 +485,27 @@
                                         <td>
                                             @switch($invoice->Status)
                                                 @case('Paid')
-                                                    <span class="badge bg-opacity-10 px-3 py-2">
+                                                    <span class="badge text-success bg-opacity-10 px-3 py-2">
                                                         <i class="bx bx-check-circle me-1"></i>Paid
                                                     </span>
                                                     @break
                                                 @case('Active')
-                                                    <span class="badge  bg-opacity-10  px-3 py-2">
+                                                    <span class="badge text-info  bg-opacity-10  px-3 py-2">
                                                         <i class="bx bx-loader-circle me-1"></i>Active
                                                     </span>
                                                     @break
                                                 @case('Pending')
-                                                    <span class="badge  bg-opacity-10  px-3 py-2">
+                                                    <span class="badge text-warning  bg-opacity-10  px-3 py-2">
                                                         <i class="bx bx-time-five me-1"></i>Pending
                                                     </span>
                                                     @break
                                                 @case('Expired')
-                                                    <span class="badge  bg-opacity-10  px-3 py-2">
+                                                    <span class="badge text-danger  bg-opacity-10  px-3 py-2">
                                                         <i class="bx bx-x-circle me-1"></i>Expired
                                                     </span>
                                                     @break
                                                 @default
-                                                    <span class="badge  bg-opacity-10 bg-secondary px-3 py-2">
+                                                    <span class="badge text-dark  bg-opacity-10 bg-secondary px-3 py-2">
                                                         {{ $invoice->Status ?? 'Unknown' }}
                                                     </span>
                                             @endswitch
@@ -480,4 +590,16 @@
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
     </style>
+
+    @script
+    <script>
+        $wire.on('close-subscription-modal', () => {
+            const modalEl = document.getElementById('subscriptionModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+            }
+        });
+    </script>
+    @endscript
 </div>
