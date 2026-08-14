@@ -14,6 +14,7 @@ class LicenseRenewalRequest extends Model
     const STATUS_COMPLETED = 'completed';
     const STATUS_REJECTED = 'rejected';
     const STATUS_APPROVED = 'approved';
+    const STATUS_PROCESSED = 'processed';
 
     protected $fillable = [
         'client_id',

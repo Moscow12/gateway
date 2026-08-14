@@ -63,20 +63,20 @@ class Clientinvoices extends Component
         ]);
 
         $renewalRequest = LicenseRenewalRequest::findOrFail($this->selectedRenewalRequestId);
-        $renewalRequest->status = LicenseRenewalRequest::STATUS_APPROVED;
+        $renewalRequest->status = LicenseRenewalRequest::STATUS_PROCESSED;
         $renewalRequest->save();
 
-        // Record "processed" on the renewal request's own history via status,
-        // but the service itself returns to "active" so it stays eligible for
-        // the next renewal cycle's invoice generation — "processed" is not a
-        // resting state for client_services.
+        // The renewal request itself records "processed", but the service
+        // returns to "active" so it stays eligible for the next renewal
+        // cycle's invoice generation — "processed" is not a resting state
+        // for client_services.
         $clientService = ClientService::findOrFail($this->selectedClientServiceId);
         $clientService->status = ClientService::STATUS_ACTIVE;
         $clientService->license_end_date = $renewalRequest->end_date;
         $clientService->next_renewal_date = $renewalRequest->end_date;
         $clientService->save();
 
-        session()->flash('message', 'License processed: renewal request approved and service is active until ' . $renewalRequest->end_date->format('d M Y') . '.');
+        session()->flash('message', 'License processed: renewal request marked as processed and service is active until ' . $renewalRequest->end_date->format('d M Y') . '.');
 
         $this->selectedRenewalRequestId = null;
         $this->selectedClientServiceId = null;
